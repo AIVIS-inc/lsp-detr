@@ -1,0 +1,196 @@
+SAVE_INTERMEDIATE_VISUALIZE_RESULT: False
+SAVE_INTERMEDIATE_VISUALIZE_RESULT: False
+[CocoDetection] Dataset loaded: 9853 images from /home/work/.mnt/combined_all_v1_bundle/val_coco.json
+selected 10 images (GT in (200,1500)): idx=[1543, 2611, 2676, 3234, 3966, 4795, 5612, 6697, 7922, 9012] gt=[503, 207, 649, 628, 950, 374, 788, 546, 399, 342]
+total GT 5386, GT in collision cells 726 (13.5%)
+[hf5class] arm=strict-local loaded 418/432 tensors (44,874,294 params, coverage 99.99% of 44,879,684); dropped 14 source tensors; new params 5,390
+arm=strict-local center_span=1.0 params=44,879,684
+Test:  [ 0/10]  eta: 0:01:04    time: 6.4481  data: 0.5081  max mem: 2292
+Test:  [ 9/10]  eta: 0:00:01    time: 1.2291  data: 0.0534  max mem: 2481
+Test: Total time: 0:00:12 (1.2461 s / it)
+Averaged stats: 
+Accumulating evaluation results...
+COCOeval_opt.accumulate() finished...
+DONE (t=0.07s).
+IoU metric: bbox
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=2000 ] = 0.001
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=2000 ] = 0.002
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=verytiny | maxDets=2000 ] = 0.000
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=  tiny | maxDets=2000 ] = 0.000
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=2000 ] = 0.014
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=2000 ] = 0.000
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=500 ] = 0.009
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=1000 ] = 0.012
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=2000 ] = 0.015
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=verytiny | maxDets=2000 ] = 0.000
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=  tiny | maxDets=2000 ] = 0.021
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=2000 ] = 0.010
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=2000 ] = 0.000
+[eval step 0] AP=0.0005 AP50=0.0018 AR@2000=0.0153 matchedIoU med=0.469 recall all=0.066 collision=0.069 non-coll=0.066
+/home/work/tksong/lsp-detr/det/scripts/smoke_p3_3_overfit.py:162: UserWarning: Converting a tensor with requires_grad=True to a scalar may lead to unexpected behavior.
+Consider using tensor.detach() first. (Triggered internally at /__w/pytorch/pytorch/torch/csrc/autograd/generated/python_variable_methods.cpp:822.)
+  history["loss"].append(float(loss))
+step 20 loss 18.9977 (vfl 2.663 l1 0.056 giou 0.638) 1.04s/step
+step 40 loss 16.0324 (vfl 2.190 l1 0.038 giou 0.549) 1.00s/step
+step 60 loss 17.1623 (vfl 2.715 l1 0.046 giou 0.522) 0.99s/step
+step 80 loss 18.5233 (vfl 2.279 l1 0.033 giou 0.476) 0.99s/step
+step 100 loss 18.3256 (vfl 3.374 l1 0.035 giou 0.439) 0.99s/step
+Test:  [ 0/10]  eta: 0:00:11    time: 1.1076  data: 0.4330  max mem: 18395
+Test:  [ 9/10]  eta: 0:00:00    time: 0.7210  data: 0.0479  max mem: 18395
+Test: Total time: 0:00:07 (0.7533 s / it)
+Averaged stats: 
+Accumulating evaluation results...
+COCOeval_opt.accumulate() finished...
+DONE (t=0.09s).
+IoU metric: bbox
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=2000 ] = 0.142
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=2000 ] = 0.316
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=verytiny | maxDets=2000 ] = 0.055
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=  tiny | maxDets=2000 ] = 0.128
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=2000 ] = 0.160
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=2000 ] = 0.176
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=500 ] = 0.272
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=1000 ] = 0.352
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=2000 ] = 0.385
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=verytiny | maxDets=2000 ] = 0.059
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=  tiny | maxDets=2000 ] = 0.290
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=2000 ] = 0.487
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=2000 ] = 0.175
+[eval step 100] AP=0.1417 AP50=0.3156 AR@2000=0.3849 matchedIoU med=0.713 recall all=0.731 collision=0.481 non-coll=0.770
+step 120 loss 17.7189 (vfl 2.272 l1 0.043 giou 0.466) 1.12s/step
+step 140 loss 15.3879 (vfl 2.255 l1 0.034 giou 0.440) 1.10s/step
+step 160 loss 17.7855 (vfl 2.251 l1 0.068 giou 0.505) 1.10s/step
+step 180 loss 12.1967 (vfl 1.417 l1 0.048 giou 0.462) 1.10s/step
+step 200 loss 13.6282 (vfl 1.669 l1 0.044 giou 0.453) 1.11s/step
+Test:  [ 0/10]  eta: 0:00:11    time: 1.1169  data: 0.4529  max mem: 18535
+Test:  [ 9/10]  eta: 0:00:00    time: 0.7008  data: 0.0480  max mem: 18535
+Test: Total time: 0:00:07 (0.7194 s / it)
+Averaged stats: 
+Accumulating evaluation results...
+COCOeval_opt.accumulate() finished...
+DONE (t=0.09s).
+IoU metric: bbox
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=2000 ] = 0.334
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=2000 ] = 0.660
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=verytiny | maxDets=2000 ] = 0.087
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=  tiny | maxDets=2000 ] = 0.300
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=2000 ] = 0.384
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=2000 ] = 0.151
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=500 ] = 0.427
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=1000 ] = 0.460
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=2000 ] = 0.473
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=verytiny | maxDets=2000 ] = 0.101
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=  tiny | maxDets=2000 ] = 0.399
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=2000 ] = 0.553
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=2000 ] = 0.150
+[eval step 200] AP=0.3338 AP50=0.6597 AR@2000=0.4729 matchedIoU med=0.751 recall all=0.838 collision=0.613 non-coll=0.873
+step 220 loss 11.4169 (vfl 1.321 l1 0.037 giou 0.431) 1.19s/step
+step 240 loss 20.1221 (vfl 3.137 l1 0.072 giou 0.535) 1.20s/step
+step 260 loss 15.8057 (vfl 2.425 l1 0.042 giou 0.465) 1.20s/step
+step 280 loss 12.4123 (vfl 1.478 l1 0.044 giou 0.501) 1.20s/step
+step 300 loss 11.1035 (vfl 1.334 l1 0.041 giou 0.426) 1.21s/step
+Test:  [ 0/10]  eta: 0:00:11    time: 1.1229  data: 0.4424  max mem: 18573
+Test:  [ 9/10]  eta: 0:00:00    time: 0.6975  data: 0.0470  max mem: 18573
+Test: Total time: 0:00:07 (0.7156 s / it)
+Averaged stats: 
+Accumulating evaluation results...
+COCOeval_opt.accumulate() finished...
+DONE (t=0.09s).
+IoU metric: bbox
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=2000 ] = 0.411
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=2000 ] = 0.783
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=verytiny | maxDets=2000 ] = 0.114
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=  tiny | maxDets=2000 ] = 0.359
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=2000 ] = 0.474
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=2000 ] = 0.476
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=500 ] = 0.458
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=1000 ] = 0.497
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=2000 ] = 0.499
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=verytiny | maxDets=2000 ] = 0.130
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=  tiny | maxDets=2000 ] = 0.429
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=2000 ] = 0.584
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=2000 ] = 0.500
+[eval step 300] AP=0.4109 AP50=0.7834 AR@2000=0.4989 matchedIoU med=0.764 recall all=0.864 collision=0.658 non-coll=0.896
+step 320 loss 10.7092 (vfl 1.266 l1 0.033 giou 0.425) 1.26s/step
+step 340 loss 10.2497 (vfl 1.209 l1 0.035 giou 0.386) 1.26s/step
+step 360 loss 19.9075 (vfl 2.380 l1 0.127 giou 0.666) 1.26s/step
+step 380 loss 10.1334 (vfl 1.221 l1 0.031 giou 0.367) 1.26s/step
+step 400 loss 12.1323 (vfl 1.547 l1 0.033 giou 0.419) 1.27s/step
+Test:  [ 0/10]  eta: 0:00:11    time: 1.1035  data: 0.4562  max mem: 18573
+Test:  [ 9/10]  eta: 0:00:00    time: 0.6814  data: 0.0481  max mem: 18573
+Test: Total time: 0:00:07 (0.7131 s / it)
+Averaged stats: 
+Accumulating evaluation results...
+COCOeval_opt.accumulate() finished...
+DONE (t=0.08s).
+IoU metric: bbox
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=2000 ] = 0.435
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=2000 ] = 0.851
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=verytiny | maxDets=2000 ] = 0.101
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=  tiny | maxDets=2000 ] = 0.396
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=2000 ] = 0.491
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=2000 ] = 0.425
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=500 ] = 0.468
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=1000 ] = 0.501
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=2000 ] = 0.501
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=verytiny | maxDets=2000 ] = 0.101
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=  tiny | maxDets=2000 ] = 0.464
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=2000 ] = 0.559
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=2000 ] = 0.425
+[eval step 400] AP=0.4352 AP50=0.8513 AR@2000=0.5011 matchedIoU med=0.756 recall all=0.892 collision=0.680 non-coll=0.924
+step 420 loss 11.3965 (vfl 1.204 l1 0.043 giou 0.475) 1.31s/step
+step 440 loss 10.1691 (vfl 1.230 l1 0.027 giou 0.398) 1.31s/step
+step 460 loss 11.3026 (vfl 1.374 l1 0.028 giou 0.394) 1.31s/step
+step 480 loss 13.3196 (vfl 1.596 l1 0.044 giou 0.450) 1.31s/step
+step 500 loss 12.5353 (vfl 1.670 l1 0.032 giou 0.426) 1.31s/step
+Test:  [ 0/10]  eta: 0:00:10    time: 1.0944  data: 0.4434  max mem: 18573
+Test:  [ 9/10]  eta: 0:00:00    time: 0.6720  data: 0.0466  max mem: 18573
+Test: Total time: 0:00:07 (0.7011 s / it)
+Averaged stats: 
+Accumulating evaluation results...
+COCOeval_opt.accumulate() finished...
+DONE (t=0.08s).
+IoU metric: bbox
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=2000 ] = 0.448
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=2000 ] = 0.879
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=verytiny | maxDets=2000 ] = 0.107
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=  tiny | maxDets=2000 ] = 0.399
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=2000 ] = 0.514
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=2000 ] = 0.576
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=500 ] = 0.469
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=1000 ] = 0.501
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=2000 ] = 0.502
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=verytiny | maxDets=2000 ] = 0.151
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=  tiny | maxDets=2000 ] = 0.445
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=2000 ] = 0.568
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=2000 ] = 0.575
+[eval step 500] AP=0.4481 AP50=0.8794 AR@2000=0.5021 matchedIoU med=0.749 recall all=0.900 collision=0.715 non-coll=0.928
+step 520 loss 11.8592 (vfl 1.512 l1 0.045 giou 0.451) 1.34s/step
+step 540 loss 11.9747 (vfl 1.763 l1 0.037 giou 0.400) 1.33s/step
+step 560 loss 9.9244 (vfl 1.152 l1 0.029 giou 0.382) 1.33s/step
+step 580 loss 11.7775 (vfl 1.273 l1 0.061 giou 0.427) 1.34s/step
+step 600 loss 9.5462 (vfl 1.186 l1 0.024 giou 0.346) 1.34s/step
+Test:  [ 0/10]  eta: 0:00:11    time: 1.1036  data: 0.4397  max mem: 18615
+Test:  [ 9/10]  eta: 0:00:00    time: 0.6856  data: 0.0463  max mem: 18615
+Test: Total time: 0:00:07 (0.7154 s / it)
+Averaged stats: 
+Accumulating evaluation results...
+COCOeval_opt.accumulate() finished...
+DONE (t=0.08s).
+IoU metric: bbox
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=2000 ] = 0.513
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=2000 ] = 0.903
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=verytiny | maxDets=2000 ] = 0.194
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=  tiny | maxDets=2000 ] = 0.464
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=2000 ] = 0.588
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=2000 ] = 0.725
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=500 ] = 0.526
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=1000 ] = 0.563
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=2000 ] = 0.563
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=verytiny | maxDets=2000 ] = 0.200
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=  tiny | maxDets=2000 ] = 0.513
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=2000 ] = 0.637
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=2000 ] = 0.725
+[eval step 600] AP=0.5133 AP50=0.9028 AR@2000=0.5635 matchedIoU med=0.786 recall all=0.916 collision=0.723 non-coll=0.946
+best AP50=0.9028 at step 600; matched IoU 0.469 -> 0.786; final recall all/collision/non-coll = 0.916/0.723/0.946
+FAIL -> /home/work/tksong/lsp-detr/det/logs/p3_3_overfit_strict-local.json

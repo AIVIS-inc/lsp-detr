@@ -1,0 +1,61 @@
+# combined_all_v1_bundle (2-class: 0=Non-tumor, 1=Tumor) - copy of Dome configs/dataset/coco_detection.yml
+# with num_classes / paths changed. `crop_size: 1536` on the wrapper is REQUIRED because
+# MultiCropDatasetWrapper auto-detects crop_size only from a transform whose class name is exactly
+# 'RandomCropWithGrid' (we use RandomCropWithGridNoDummy, see det/lsp_det/transforms.py) and would
+# otherwise silently fall back to 2048 (changing the per-image crop counts).
+task: detection
+
+evaluator:
+  type: AitodCocoEvaluator
+  iou_types: ['bbox', ]
+
+num_classes: 2
+remap_mscoco_category: False
+
+train_dataloader:
+  type: DataLoader
+  dataset:
+    # Multi-Crop Wrapper for better annotation utilization
+    type: MultiCropDatasetWrapper
+    crops_per_image: 16  # Number of crops per large image (>=4096px)
+    large_threshold_multiplier: 2  # Multiplier for large image threshold (default: 2)
+    crop_size: 1536  # explicit (see header) - must equal RandomCropWithGridNoDummy.crop_size
+
+    grid_selection_strategy: 'random'  # 'random', 'stratified', or 'deterministic'
+    seed: null  # Set seed for reproducibility (optional)
+
+    # Inner dataset configuration
+    dataset:
+      type: CocoDetection
+      img_folder: /home/work/.mnt/combined_all_v1_bundle
+      # derived file: original train_coco.json + 'area'/'iscrowd' filled for 1,924,260 ki67_NET anns (66 images) that lack
+      # them (Dome CocoDetection reads obj['area'] unconditionally). Original untouched; see det/scripts/fix_train_area.py
+      ann_file: /home/work/.mnt/combined_all_v1_bundle_derived/train_coco_areafix.json
+      return_masks: False
+      transforms:
+        type: Compose
+        ops: ~
+
+  shuffle: True
+  num_workers: 8
+  drop_last: True
+  persistent_workers: True  # Reuse workers across epochs
+  collate_fn:
+    type: BatchImageCollateFunction
+
+
+val_dataloader:
+  type: DataLoader
+  dataset:
+    type: CocoDetection
+    img_folder: /home/work/.mnt/combined_all_v1_bundle
+    ann_file: /home/work/.mnt/combined_all_v1_bundle/val_coco.json
+    return_masks: False
+    transforms:
+      type: Compose
+      ops: ~
+  shuffle: False
+  num_workers: 8
+  drop_last: False
+  collate_fn:
+    type: BatchImageCollateFunction

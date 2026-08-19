@@ -1,0 +1,92 @@
+{
+  "backbone.stage1": {
+    "max_abs": 0.0,
+    "mean_abs": 0.0,
+    "max_rel": 0.0,
+    "shape": [
+      1,
+      96,
+      64,
+      64
+    ]
+  },
+  "backbone.stage2": {
+    "max_abs": 0.0,
+    "mean_abs": 0.0,
+    "max_rel": 0.0,
+    "shape": [
+      1,
+      192,
+      32,
+      32
+    ]
+  },
+  "backbone.stage3": {
+    "max_abs": 0.0,
+    "mean_abs": 0.0,
+    "max_rel": 0.0,
+    "shape": [
+      1,
+      384,
+      16,
+      16
+    ]
+  },
+  "backbone.stage4": {
+    "max_abs": 0.0,
+    "mean_abs": 0.0,
+    "max_rel": 0.0,
+    "shape": [
+      1,
+      768,
+      8,
+      8
+    ]
+  },
+  "embeddings": {
+    "max_abs": 0.23586490750312805,
+    "mean_abs": 0.006232403218746185,
+    "max_rel": 0.037602368742227554,
+    "shape": [
+      1,
+      324,
+      384
+    ]
+  },
+  "points(norm)": {
+    "max_abs": 0.0025449395179748535,
+    "mean_abs": 8.023244299693033e-05,
+    "max_rel": 0.0025674840435385704,
+    "shape": [
+      1,
+      324,
+      2
+    ]
+  },
+  "points(px@256)": {
+    "max_abs": 0.6515045166015625,
+    "mean_abs": 0.020539505407214165,
+    "max_rel": 0.0025674840435385704,
+    "shape": [
+      1,
+      324,
+      2
+    ]
+  },
+  "cachedP": {
+    "snapshot_cachedP_vs_current": 0.27105362665878047,
+    "port_P_vs_f64": 0.00022272837273229484,
+    "snapshot_eval_delta": 0.0,
+    "port_eval_delta": 0.02208448201417923,
+    "port_eval_vs_train": 0.03470166027545929,
+    "snapshot_eval_vs_train": 0.22775541245937347
+  },
+  "geometry_1536_vs_256_at_256_input": [
+    0.0,
+    0.0,
+    14.222894668579102,
+    108.09551239013672
+  ],
+  "tf32_mode": "keep",
+  "pass": false
+}

@@ -1,0 +1,19 @@
+[CocoDetection] Dataset loaded: 9853 images from /home/work/.mnt/combined_all_v1_bundle/val_coco.json
+dataset val: 9853 images, loaded in 13.1s
+densest images (GT count, idx): [(2739, 9610), (2739, 9561), (2739, 9512), (2720, 9612)]
+[hf5class] arm=strict-local loaded 418/432 tensors (44,874,294 params, coverage 99.99% of 44,879,684); dropped 14 source tensors; new params 5,390
+model params: 44,879,684 trainable 44,571,038
+/home/work/tksong/lsp-detr/det/scripts/smoke_p3_1_single_gpu.py:86: UserWarning: Converting a tensor with requires_grad=True to a scalar may lead to unexpected behavior.
+Consider using tensor.detach() first. (Triggered internally at /__w/pytorch/pytorch/torch/csrc/autograd/generated/python_variable_methods.cpp:822.)
+  rec = {"tag": tag, "num_gt": [int(len(t["labels"])) for t in targets], "loss": float(loss),
+[dense_step0] gt=[2739] loss=25.1087 (vfl 3.374 l1 0.171 giou 0.979) gnorm=305.083 fwd=49.15s crit=2.98s bwd=1.95s opt=0.11s step=54.19s peak=22.4GB unused=0 wh_med=14.0px
+[dense_step1] gt=[2739] loss=19.0079 (vfl 2.512 l1 0.170 giou 1.006) gnorm=172.341 fwd=0.57s crit=2.99s bwd=0.18s opt=0.01s step=3.74s peak=24.5GB unused=0 wh_med=14.4px
+[dense_step2] gt=[2739] loss=15.3155 (vfl 1.621 l1 0.148 giou 0.935) gnorm=113.914 fwd=0.57s crit=2.62s bwd=0.18s opt=0.01s step=3.38s peak=23.9GB unused=0 wh_med=14.9px
+[dense_step3] gt=[2720] loss=15.4154 (vfl 1.439 l1 0.170 giou 0.962) gnorm=56.168 fwd=0.57s crit=2.95s bwd=0.18s opt=0.01s step=3.71s peak=24.1GB unused=0 wh_med=15.5px
+[dense_step4] gt=[2739] loss=18.0341 (vfl 1.768 l1 0.172 giou 0.960) gnorm=145.537 fwd=0.56s crit=2.91s bwd=0.18s opt=0.01s step=3.67s peak=24.3GB unused=0 wh_med=16.2px
+[dense_step5] gt=[2739] loss=15.3511 (vfl 1.587 l1 0.151 giou 0.924) gnorm=24.478 fwd=0.56s crit=2.75s bwd=0.18s opt=0.01s step=3.50s peak=23.6GB unused=0 wh_med=16.9px
+[all_empty_batch] gt=[0] loss=3843.4658 (vfl 1144.206 l1 0.000 giou 0.000) gnorm=86196.062 fwd=0.57s crit=0.03s bwd=0.16s opt=0.01s step=0.76s peak=14.0GB unused=0 wh_med=17.4px
+[b2_one_empty] gt=[2739, 0] loss=17.1203 (vfl 1.805 l1 0.148 giou 0.934) gnorm=97.407 fwd=11.57s crit=3.55s bwd=1.65s opt=0.01s step=16.78s peak=46.0GB unused=0 wh_med=17.7px
+[eval] postprocessor: 1900 dets after top-2000 + NMS(0.7)/score 0.01; labels set [0]
+peak GB max=46.0  step times (post-warmup)=['3.74', '3.38', '3.71', '3.67', '3.50']  unused=[]
+PASS -> /home/work/tksong/lsp-detr/det/logs/p3_1_single_gpu.json

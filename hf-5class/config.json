@@ -1,0 +1,59 @@
+{
+  "architectures": [
+    "LSPDetrModel"
+  ],
+  "auto_map": {
+    "AutoConfig": "configuration.LSPDetrConfig",
+    "AutoModelForObjectDetection": "modeling.LSPDetrModel"
+  },
+  "backbone": "microsoft/swinv2-tiny-patch4-window16-256",
+  "backbone_config": null,
+  "backbone_kwargs": {
+    "out_features": [
+      "stage1",
+      "stage2",
+      "stage3",
+      "stage4"
+    ]
+  },
+  "cross_sta_config": [
+    {
+      "kernel": 5,
+      "kv_tile": 8,
+      "q_tile": 3
+    },
+    {
+      "kernel": 5,
+      "kv_tile": 4,
+      "q_tile": 3
+    },
+    {
+      "kernel": 5,
+      "kv_tile": 2,
+      "q_tile": 3
+    }
+  ],
+  "dim": 384,
+  "feature_levels": [
+    2,
+    1,
+    0,
+    2,
+    1,
+    0
+  ],
+  "model_type": "lsp_detr",
+  "num_classes": 5,
+  "num_heads": 12,
+  "num_radial_distances": 64,
+  "query_block_size": 14.222222222222223,
+  "self_sta_config": {
+    "kernel": 3,
+    "kv_tile": 3,
+    "q_tile": 3
+  },
+  "torch_dtype": "float32",
+  "transformers_version": "4.52.3",
+  "use_pretrained_backbone": true,
+  "use_timm_backbone": false
+}

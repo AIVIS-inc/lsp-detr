@@ -1,0 +1,50 @@
+# LSP-DETR (Swinv2-T + STA decoder) detection arm - counterpart of Dome's include/dome_hgnetv2.yml
+task: detection
+
+model: LSPDetrDetection
+criterion: LSPCriterion
+postprocessor: DomePostProcessor
+
+use_focal_loss: True          # global key: read by HungarianMatcher (__share__) and DomePostProcessor
+eval_spatial_size: [1536, 1536]
+
+LSPDetrDetection:
+  num_classes: 2              # overridden by the global num_classes (__share__)
+  dim: 384
+  num_heads: 12
+  query_block_size: 14.222222222222223   # 256/18 (checkpoint config value) -> 108x108 = 11,664 queries at 1536
+  feature_levels: [2, 1, 0, 2, 1, 0]
+  self_sta_config: {kernel: 3, q_tile: 3, kv_tile: 3}
+  cross_sta_config:
+    - {kernel: 5, q_tile: 3, kv_tile: 8}
+    - {kernel: 5, q_tile: 3, kv_tile: 4}
+    - {kernel: 5, q_tile: 3, kv_tile: 2}
+  # backbone (Swinv2-Tiny patch4/window16, built offline from config; weights from the checkpoint)
+  backbone_image_size: 1536   # HF Swinv2 fixes window/shift geometry from this (do NOT leave at 256)
+  backbone_window_size: 16
+  backbone_drop_path_rate: 0.1  # HF hub default for swinv2-tiny (what LSP was trained with)
+  backbone_freeze_at: 1       # patch-embed + Swin stage1 (encoder.layers.0) frozen; the rest at backbone LR
+  backbone_freeze_patch_embed: True
+  # heads / policy
+  wh_prior_px: [14.0, 14.0]   # P0: train_coco.json per-axis bbox median (det/configs/wh_prior.json); NOT log(7.5)
+  center_mode: strict-local   # 'strict-local' (parity arm) | 'movable-reference' (production candidate, §4.2)
+  movable_span_cells: 3.0     # movable-reference: centre may move over [-1,+2) cells around its own cell
+  feature_sampling_fixed: False  # keep the snapshot's pixel-coordinate grid_sample behaviour (§4.3)
+  # checkpoint (controlled remap/assert load, §3.1)
+  pretrained: /home/work/tksong/lsp-detr/hf-5class/model.safetensors
+  pretrained_arm: null        # null -> follows center_mode
+  expect_imagenet_norm: True
+  input_norm_check: warn
+
+LSPCriterion:
+  weight_dict: {loss_vfl: 3, loss_bbox: 3, loss_giou: 1}
+  losses: ['vfl', 'boxes']
+  alpha: 0.75
+  gamma: 2.0
+  use_uni_set: True           # boxes: union match over final+5 aux with num_boxes_go (Dome parity)
+
+  matcher:
+    type: HungarianMatcher
+    weight_dict: {cost_class: 3, cost_bbox: 3, cost_giou: 1}
+    alpha: 0.25
+    gamma: 2.0

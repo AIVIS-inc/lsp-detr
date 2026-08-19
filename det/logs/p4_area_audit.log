@@ -1,0 +1,3 @@
+train anns 43953630 no_area 1924260 imgs_with_no_area_anns 66 no_iscrowd 1924260 bad_area 0 by_source {'ki67_NET': 1924260} 103s
+val anns 4554976 no_area 0 imgs_with_no_area_anns 0 no_iscrowd 0 bad_area 0 by_source {} 12s
+test anns 4307489 no_area 0 imgs_with_no_area_anns 0 no_iscrowd 0 bad_area 0 by_source {} 11s

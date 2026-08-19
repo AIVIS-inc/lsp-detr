@@ -1,0 +1,516 @@
+reference: /home/work/tksong/AIVIS-DETECTION/AIVIS-Dome-DETR/train_run.log
+ours     : /home/work/tksong/lsp-detr/det/configs/LSP-T-combined.yml (arm=strict-local)
+flattened keys: ref=217 ours=201 identical=139 differing=127
+------------------------------------------------------------------------------------------------------------------------
+[OK ] output_dir
+      dome: 'Result/[HER2]new_merged_all_Dome-M_H100x8_scratch_30ep'
+      lsp : 'output/[combined]LSP-T_strict-local_H100x8_hf5class-ft_30ep'
+      why : run identity
+[OK ] yaml_cfg.DOME.backbone
+      dome: 'HGNetv2'
+      lsp : '<absent>'
+      why : model-specific block
+[OK ] yaml_cfg.DOME.decoder
+      dome: 'DomeTransformer'
+      lsp : '<absent>'
+      why : model-specific block
+[OK ] yaml_cfg.DOME.encoder
+      dome: 'HybridEncoder'
+      lsp : '<absent>'
+      why : model-specific block
+[OK ] yaml_cfg.DomeCriterion.alpha
+      dome: 0.75
+      lsp : '<absent>'
+      why : model-specific block
+[OK ] yaml_cfg.DomeCriterion.defe_density_map_weight
+      dome: 1
+      lsp : '<absent>'
+      why : model-specific block
+[OK ] yaml_cfg.DomeCriterion.gamma
+      dome: 2.0
+      lsp : '<absent>'
+      why : model-specific block
+[OK ] yaml_cfg.DomeCriterion.losses
+      dome: ['vfl', 'boxes', 'local']
+      lsp : '<absent>'
+      why : model-specific block
+[OK ] yaml_cfg.DomeCriterion.matcher.alpha
+      dome: 0.25
+      lsp : '<absent>'
+      why : model-specific block
+[OK ] yaml_cfg.DomeCriterion.matcher.gamma
+      dome: 2.0
+      lsp : '<absent>'
+      why : model-specific block
+[OK ] yaml_cfg.DomeCriterion.matcher.type
+      dome: 'HungarianMatcher'
+      lsp : '<absent>'
+      why : model-specific block
+[OK ] yaml_cfg.DomeCriterion.matcher.weight_dict.cost_bbox
+      dome: 3
+      lsp : '<absent>'
+      why : model-specific block
+[OK ] yaml_cfg.DomeCriterion.matcher.weight_dict.cost_class
+      dome: 3
+      lsp : '<absent>'
+      why : model-specific block
+[OK ] yaml_cfg.DomeCriterion.matcher.weight_dict.cost_giou
+      dome: 1
+      lsp : '<absent>'
+      why : model-specific block
+[OK ] yaml_cfg.DomeCriterion.reg_max
+      dome: 32
+      lsp : '<absent>'
+      why : model-specific block
+[OK ] yaml_cfg.DomeCriterion.weight_dict.loss_bbox
+      dome: 3
+      lsp : '<absent>'
+      why : model-specific block
+[OK ] yaml_cfg.DomeCriterion.weight_dict.loss_ddf
+      dome: 0.5
+      lsp : '<absent>'
+      why : model-specific block
+[OK ] yaml_cfg.DomeCriterion.weight_dict.loss_fgl
+      dome: 0.05
+      lsp : '<absent>'
+      why : model-specific block
+[OK ] yaml_cfg.DomeCriterion.weight_dict.loss_giou
+      dome: 1
+      lsp : '<absent>'
+      why : model-specific block
+[OK ] yaml_cfg.DomeCriterion.weight_dict.loss_vfl
+      dome: 3
+      lsp : '<absent>'
+      why : model-specific block
+[OK ] yaml_cfg.DomeTransformer.box_noise_scale
+      dome: 1.0
+      lsp : '<absent>'
+      why : model-specific block
+[OK ] yaml_cfg.DomeTransformer.cross_attn_method
+      dome: 'default'
+      lsp : '<absent>'
+      why : model-specific block
+[OK ] yaml_cfg.DomeTransformer.dim_feedforward
+      dome: 512
+      lsp : '<absent>'
+      why : model-specific block
+[OK ] yaml_cfg.DomeTransformer.eval_idx
+      dome: -1
+      lsp : '<absent>'
+      why : model-specific block
+[OK ] yaml_cfg.DomeTransformer.feat_channels
+      dome: [128, 128, 128]
+      lsp : '<absent>'
+      why : model-specific block
+[OK ] yaml_cfg.DomeTransformer.feat_strides
+      dome: [8, 16, 32]
+      lsp : '<absent>'
+      why : model-specific block
+[OK ] yaml_cfg.DomeTransformer.hidden_dim
+      dome: 128
+      lsp : '<absent>'
+      why : model-specific block
+[OK ] yaml_cfg.DomeTransformer.label_noise_ratio
+      dome: 0.5
+      lsp : '<absent>'
+      why : model-specific block
+[OK ] yaml_cfg.DomeTransformer.layer_scale
+      dome: 1
+      lsp : '<absent>'
+      why : model-specific block
+[OK ] yaml_cfg.DomeTransformer.max_num_select
+      dome: 2000
+      lsp : '<absent>'
+      why : model-specific block
+[OK ] yaml_cfg.DomeTransformer.min_num_select
+      dome: 300
+      lsp : '<absent>'
+      why : model-specific block
+[OK ] yaml_cfg.DomeTransformer.num_denoising
+      dome: 100
+      lsp : '<absent>'
+      why : model-specific block
+[OK ] yaml_cfg.DomeTransformer.num_layers
+      dome: 4
+      lsp : '<absent>'
+      why : model-specific block
+[OK ] yaml_cfg.DomeTransformer.num_levels
+      dome: 3
+      lsp : '<absent>'
+      why : model-specific block
+[OK ] yaml_cfg.DomeTransformer.num_points
+      dome: [8, 3, 1]
+      lsp : '<absent>'
+      why : model-specific block
+[OK ] yaml_cfg.DomeTransformer.query_select_method
+      dome: 'default'
+      lsp : '<absent>'
+      why : model-specific block
+[OK ] yaml_cfg.DomeTransformer.reg_max
+      dome: 32
+      lsp : '<absent>'
+      why : model-specific block
+[OK ] yaml_cfg.DomeTransformer.reg_scale
+      dome: 4
+      lsp : '<absent>'
+      why : model-specific block
+[OK ] yaml_cfg.HGNetv2.freeze_at
+      dome: 1
+      lsp : '<absent>'
+      why : model-specific block
+[OK ] yaml_cfg.HGNetv2.freeze_norm
+      dome: False
+      lsp : '<absent>'
+      why : model-specific block
+[OK ] yaml_cfg.HGNetv2.freeze_stem_only
+      dome: False
+      lsp : '<absent>'
+      why : model-specific block
+[OK ] yaml_cfg.HGNetv2.local_model_dir
+      dome: 'weight/hgnetv2/'
+      lsp : '<absent>'
+      why : model-specific block
+[OK ] yaml_cfg.HGNetv2.name
+      dome: 'B2'
+      lsp : '<absent>'
+      why : model-specific block
+[OK ] yaml_cfg.HGNetv2.pretrained
+      dome: True
+      lsp : '<absent>'
+      why : model-specific block
+[OK ] yaml_cfg.HGNetv2.return_idx
+      dome: [1, 2, 3]
+      lsp : '<absent>'
+      why : model-specific block
+[OK ] yaml_cfg.HGNetv2.use_lab
+      dome: True
+      lsp : '<absent>'
+      why : model-specific block
+[OK ] yaml_cfg.HybridEncoder.act
+      dome: 'silu'
+      lsp : '<absent>'
+      why : model-specific block
+[OK ] yaml_cfg.HybridEncoder.defe_type
+      dome: 'light'
+      lsp : '<absent>'
+      why : model-specific block
+[OK ] yaml_cfg.HybridEncoder.depth_mult
+      dome: 0.67
+      lsp : '<absent>'
+      why : model-specific block
+[OK ] yaml_cfg.HybridEncoder.dim_feedforward
+      dome: 1024
+      lsp : '<absent>'
+      why : model-specific block
+[OK ] yaml_cfg.HybridEncoder.dropout
+      dome: 0.0
+      lsp : '<absent>'
+      why : model-specific block
+[OK ] yaml_cfg.HybridEncoder.enc_act
+      dome: 'gelu'
+      lsp : '<absent>'
+      why : model-specific block
+[OK ] yaml_cfg.HybridEncoder.enc_n_points
+      dome: 6
+      lsp : '<absent>'
+      why : model-specific block
+[OK ] yaml_cfg.HybridEncoder.expansion
+      dome: 1
+      lsp : '<absent>'
+      why : model-specific block
+[OK ] yaml_cfg.HybridEncoder.feat_strides
+      dome: [8, 16, 32]
+      lsp : '<absent>'
+      why : model-specific block
+[OK ] yaml_cfg.HybridEncoder.hidden_dim
+      dome: 128
+      lsp : '<absent>'
+      why : model-specific block
+[OK ] yaml_cfg.HybridEncoder.in_channels
+      dome: [384, 768, 1536]
+      lsp : '<absent>'
+      why : model-specific block
+[OK ] yaml_cfg.HybridEncoder.mwas_window_size
+      dome: 8
+      lsp : '<absent>'
+      why : model-specific block
+[OK ] yaml_cfg.HybridEncoder.nhead
+      dome: 8
+      lsp : '<absent>'
+      why : model-specific block
+[OK ] yaml_cfg.HybridEncoder.num_encoder_layers
+      dome: 1
+      lsp : '<absent>'
+      why : model-specific block
+[OK ] yaml_cfg.HybridEncoder.num_feature_levels
+      dome: 4
+      lsp : '<absent>'
+      why : model-specific block
+[OK ] yaml_cfg.HybridEncoder.use_defe
+      dome: True
+      lsp : '<absent>'
+      why : model-specific block
+[OK ] yaml_cfg.HybridEncoder.use_deformable
+      dome: False
+      lsp : '<absent>'
+      why : model-specific block
+[OK ] yaml_cfg.HybridEncoder.use_encoder_idx
+      dome: [2]
+      lsp : '<absent>'
+      why : model-specific block
+[OK ] yaml_cfg.HybridEncoder.use_hybrid
+      dome: True
+      lsp : '<absent>'
+      why : model-specific block
+[OK ] yaml_cfg.HybridEncoder.use_mwas
+      dome: True
+      lsp : '<absent>'
+      why : model-specific block
+[OK ] yaml_cfg.LSPCriterion.alpha
+      dome: '<absent>'
+      lsp : 0.75
+      why : model-specific block
+[OK ] yaml_cfg.LSPCriterion.gamma
+      dome: '<absent>'
+      lsp : 2.0
+      why : model-specific block
+[OK ] yaml_cfg.LSPCriterion.losses
+      dome: '<absent>'
+      lsp : ['vfl', 'boxes']
+      why : model-specific block
+[OK ] yaml_cfg.LSPCriterion.matcher.alpha
+      dome: '<absent>'
+      lsp : 0.25
+      why : model-specific block
+[OK ] yaml_cfg.LSPCriterion.matcher.gamma
+      dome: '<absent>'
+      lsp : 2.0
+      why : model-specific block
+[OK ] yaml_cfg.LSPCriterion.matcher.type
+      dome: '<absent>'
+      lsp : 'HungarianMatcher'
+      why : model-specific block
+[OK ] yaml_cfg.LSPCriterion.matcher.weight_dict.cost_bbox
+      dome: '<absent>'
+      lsp : 3
+      why : model-specific block
+[OK ] yaml_cfg.LSPCriterion.matcher.weight_dict.cost_class
+      dome: '<absent>'
+      lsp : 3
+      why : model-specific block
+[OK ] yaml_cfg.LSPCriterion.matcher.weight_dict.cost_giou
+      dome: '<absent>'
+      lsp : 1
+      why : model-specific block
+[OK ] yaml_cfg.LSPCriterion.use_uni_set
+      dome: '<absent>'
+      lsp : True
+      why : model-specific block
+[OK ] yaml_cfg.LSPCriterion.weight_dict.loss_bbox
+      dome: '<absent>'
+      lsp : 3
+      why : model-specific block
+[OK ] yaml_cfg.LSPCriterion.weight_dict.loss_giou
+      dome: '<absent>'
+      lsp : 1
+      why : model-specific block
+[OK ] yaml_cfg.LSPCriterion.weight_dict.loss_vfl
+      dome: '<absent>'
+      lsp : 3
+      why : model-specific block
+[OK ] yaml_cfg.LSPDetrDetection.backbone_drop_path_rate
+      dome: '<absent>'
+      lsp : 0.1
+      why : model-specific block
+[OK ] yaml_cfg.LSPDetrDetection.backbone_freeze_at
+      dome: '<absent>'
+      lsp : 1
+      why : model-specific block
+[OK ] yaml_cfg.LSPDetrDetection.backbone_freeze_patch_embed
+      dome: '<absent>'
+      lsp : True
+      why : model-specific block
+[OK ] yaml_cfg.LSPDetrDetection.backbone_image_size
+      dome: '<absent>'
+      lsp : 1536
+      why : model-specific block
+[OK ] yaml_cfg.LSPDetrDetection.backbone_window_size
+      dome: '<absent>'
+      lsp : 16
+      why : model-specific block
+[OK ] yaml_cfg.LSPDetrDetection.center_mode
+      dome: '<absent>'
+      lsp : 'strict-local'
+      why : model-specific block
+[OK ] yaml_cfg.LSPDetrDetection.cross_sta_config[0].kernel
+      dome: '<absent>'
+      lsp : 5
+      why : model-specific block
+[OK ] yaml_cfg.LSPDetrDetection.cross_sta_config[0].kv_tile
+      dome: '<absent>'
+      lsp : 8
+      why : model-specific block
+[OK ] yaml_cfg.LSPDetrDetection.cross_sta_config[0].q_tile
+      dome: '<absent>'
+      lsp : 3
+      why : model-specific block
+[OK ] yaml_cfg.LSPDetrDetection.cross_sta_config[1].kernel
+      dome: '<absent>'
+      lsp : 5
+      why : model-specific block
+[OK ] yaml_cfg.LSPDetrDetection.cross_sta_config[1].kv_tile
+      dome: '<absent>'
+      lsp : 4
+      why : model-specific block
+[OK ] yaml_cfg.LSPDetrDetection.cross_sta_config[1].q_tile
+      dome: '<absent>'
+      lsp : 3
+      why : model-specific block
+[OK ] yaml_cfg.LSPDetrDetection.cross_sta_config[2].kernel
+      dome: '<absent>'
+      lsp : 5
+      why : model-specific block
+[OK ] yaml_cfg.LSPDetrDetection.cross_sta_config[2].kv_tile
+      dome: '<absent>'
+      lsp : 2
+      why : model-specific block
+[OK ] yaml_cfg.LSPDetrDetection.cross_sta_config[2].q_tile
+      dome: '<absent>'
+      lsp : 3
+      why : model-specific block
+[OK ] yaml_cfg.LSPDetrDetection.dim
+      dome: '<absent>'
+      lsp : 384
+      why : model-specific block
+[OK ] yaml_cfg.LSPDetrDetection.expect_imagenet_norm
+      dome: '<absent>'
+      lsp : True
+      why : model-specific block
+[OK ] yaml_cfg.LSPDetrDetection.feature_levels
+      dome: '<absent>'
+      lsp : [2, 1, 0, 2, 1, 0]
+      why : model-specific block
+[OK ] yaml_cfg.LSPDetrDetection.feature_sampling_fixed
+      dome: '<absent>'
+      lsp : False
+      why : model-specific block
+[OK ] yaml_cfg.LSPDetrDetection.input_norm_check
+      dome: '<absent>'
+      lsp : 'warn'
+      why : model-specific block
+[OK ] yaml_cfg.LSPDetrDetection.movable_span_cells
+      dome: '<absent>'
+      lsp : 3.0
+      why : model-specific block
+[OK ] yaml_cfg.LSPDetrDetection.num_classes
+      dome: '<absent>'
+      lsp : 2
+      why : model-specific block
+[OK ] yaml_cfg.LSPDetrDetection.num_heads
+      dome: '<absent>'
+      lsp : 12
+      why : model-specific block
+[OK ] yaml_cfg.LSPDetrDetection.pretrained
+      dome: '<absent>'
+      lsp : '/home/work/tksong/lsp-detr/hf-5class/model.safetensors'
+      why : model-specific block
+[OK ] yaml_cfg.LSPDetrDetection.pretrained_arm
+      dome: '<absent>'
+      lsp : None
+      why : model-specific block
+[OK ] yaml_cfg.LSPDetrDetection.query_block_size
+      dome: '<absent>'
+      lsp : 14.222222222222223
+      why : model-specific block
+[OK ] yaml_cfg.LSPDetrDetection.self_sta_config.kernel
+      dome: '<absent>'
+      lsp : 3
+      why : model-specific block
+[OK ] yaml_cfg.LSPDetrDetection.self_sta_config.kv_tile
+      dome: '<absent>'
+      lsp : 3
+      why : model-specific block
+[OK ] yaml_cfg.LSPDetrDetection.self_sta_config.q_tile
+      dome: '<absent>'
+      lsp : 3
+      why : model-specific block
+[OK ] yaml_cfg.LSPDetrDetection.wh_prior_px
+      dome: '<absent>'
+      lsp : [14.0, 14.0]
+      why : model-specific block
+[OK ] yaml_cfg.__include__
+      dome: ['../dataset/coco_detection.yml', '../runtime.yml', './include/dataloader.yml', './include/optimizer.yml', './include/dome_hgnetv2.yml']
+      lsp : ['./dataset/combined_tnt_detection.yml', '../../../AIVIS-DETECTION/AIVIS-Dome-DETR/configs/runtime.yml', '../../../AIVIS-DETECTION/AIVIS-Dome-DETR/configs/dome/include/dataloader.yml', '../../../AIVIS-DETECTION/AIVIS-Dome-DETR/configs/dome/include/optimizer.yml', './include/lsp_swinv2.yml']
+      why : run identity
+[OK ] yaml_cfg.config
+      dome: 'configs/dome/Dome-M-AITOD.yml'
+      lsp : '/home/work/tksong/lsp-detr/det/configs/LSP-T-combined.yml'
+      why : run identity
+[OK ] yaml_cfg.criterion
+      dome: 'DomeCriterion'
+      lsp : 'LSPCriterion'
+      why : model/criterion name
+[OK ] yaml_cfg.model
+      dome: 'DOME'
+      lsp : 'LSPDetrDetection'
+      why : model/criterion name
+[OK ] yaml_cfg.num_classes
+      dome: 5
+      lsp : 2
+      why : dataset paths / classes
+[OK ] yaml_cfg.optimizer.params[1].lr
+      dome: '<absent>'
+      lsp : 1.25e-05
+      why : optimizer 3-group split
+[OK ] yaml_cfg.optimizer.params[1].params
+      dome: '^(?=.*(?:encoder|decoder))(?=.*(?:norm|bn)).*$'
+      lsp : '^(?=.*backbone)(?=.*norm).*$'
+      why : optimizer 3-group split
+[OK ] yaml_cfg.optimizer.params[2].params
+      dome: '<absent>'
+      lsp : '^(?!.*backbone)(?=.*norm).*$'
+      why : optimizer 3-group split
+[OK ] yaml_cfg.optimizer.params[2].weight_decay
+      dome: '<absent>'
+      lsp : 0.0
+      why : optimizer 3-group split
+[OK ] yaml_cfg.output_dir
+      dome: 'Result/[HER2]new_merged_all_Dome-M_H100x8_scratch_30ep'
+      lsp : 'output/[combined]LSP-T_strict-local_H100x8_hf5class-ft_30ep'
+      why : run identity
+[OK ] yaml_cfg.train_dataloader.dataset.crop_size
+      dome: '<absent>'
+      lsp : 1536
+      why : dummy removal (NoDummy crop + explicit wrapper crop_size)
+[OK ] yaml_cfg.train_dataloader.dataset.dataset.ann_file
+      dome: '/home/work/.mnt/DET_DATA/new_merged_all/train.json'
+      lsp : '/home/work/.mnt/combined_all_v1_bundle_derived/train_coco_areafix.json'
+      why : dataset paths / classes
+[OK ] yaml_cfg.train_dataloader.dataset.dataset.img_folder
+      dome: '/home/work/.mnt/DET_DATA/new_merged_all/train'
+      lsp : '/home/work/.mnt/combined_all_v1_bundle'
+      why : dataset paths / classes
+[OK ] yaml_cfg.train_dataloader.dataset.dataset.transforms.ops[0].type
+      dome: 'RandomCropWithGrid'
+      lsp : 'RandomCropWithGridNoDummy'
+      why : dummy removal (NoDummy crop + explicit wrapper crop_size)
+[OK ] yaml_cfg.train_dataloader.dataset.dataset.transforms.ops[8].type
+      dome: '<absent>'
+      lsp : 'ImageNetNormalize'
+      why : ImageNet normalize (extra last op)
+[OK ] yaml_cfg.val_dataloader.dataset.ann_file
+      dome: '/home/work/.mnt/DET_DATA/new_merged_all/val.json'
+      lsp : '/home/work/.mnt/combined_all_v1_bundle/val_coco.json'
+      why : dataset paths / classes
+[OK ] yaml_cfg.val_dataloader.dataset.img_folder
+      dome: '/home/work/.mnt/DET_DATA/new_merged_all/val'
+      lsp : '/home/work/.mnt/combined_all_v1_bundle'
+      why : dataset paths / classes
+[OK ] yaml_cfg.val_dataloader.dataset.transforms.ops[2].type
+      dome: '<absent>'
+      lsp : 'ImageNetNormalize'
+      why : ImageNet normalize (extra last op)
+------------------------------------------------------------------------------------------------------------------------
+recipe keys identical: use_ema, ema.decay, ema.warmups, ema.start, clip_max_norm, use_amp, use_focal_loss, epoches, lr_scheduler.milestones, optimizer.lr, optimizer.weight_decay, optimizer.params[0].lr, DomePostProcessor.num_top_queries, train_dataloader.num_workers, train_dataloader.total_batch_size, checkpoint_freq, sync_bn, find_unused_parameters, lr_warmup_scheduler.warmup_duration
+
+PASS: every difference is model-specific / normalisation / dummy-removal / dataset / run identity.

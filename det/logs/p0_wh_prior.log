@@ -1,0 +1,83 @@
+loaded /home/work/.mnt/combined_all_v1_bundle/train_coco.json in 98.8s: images=18678 anns=43953630 cats=[{'id': 0, 'name': 'Non-tumor', 'supercategory': ''}, {'id': 1, 'name': 'Tumor', 'supercategory': ''}]
+{
+  "ann_file": "/home/work/.mnt/combined_all_v1_bundle/train_coco.json",
+  "num_images": 18678,
+  "num_annotations": 43953630,
+  "median_w": 14.0,
+  "median_h": 14.0,
+  "log_median_w": 2.6390573296152584,
+  "log_median_h": 2.6390573296152584,
+  "w": {
+    "p05": 9.0,
+    "p25": 12.0,
+    "median": 14.0,
+    "p75": 18.0,
+    "p95": 24.0,
+    "mean": 15.190815946714753
+  },
+  "h": {
+    "p05": 9.0,
+    "p25": 12.0,
+    "median": 14.0,
+    "p75": 18.0,
+    "p95": 24.0,
+    "mean": 15.119642322147222
+  },
+  "per_class": {
+    "0": {
+      "n": 27653193,
+      "median_w": 14.0,
+      "median_h": 14.0
+    },
+    "1": {
+      "n": 16300437,
+      "median_w": 16.0,
+      "median_h": 16.0
+    }
+  },
+  "images_without_annotations": 0,
+  "image_sizes": {
+    "512x512": 16384,
+    "4096x4096": 2140,
+    "3375x3375": 132,
+    "2048x2048": 22
+  }
+}
+per_source: {
+ "ITGB6_BLCA": {
+  "n": 361648,
+  "median_w": 16.0,
+  "median_h": 15.0
+ },
+ "ITGB6_LUAD": {
+  "n": 296354,
+  "median_w": 16.0,
+  "median_h": 16.0
+ },
+ "ROR1_LUAD": {
+  "n": 247908,
+  "median_w": 15.0,
+  "median_h": 14.0
+ },
+ "ROR1_LUSC": {
+  "n": 333230,
+  "median_w": 15.0,
+  "median_h": 14.0
+ },
+ "breast_HER2": {
+  "n": 19053368,
+  "median_w": 14.0,
+  "median_h": 14.0
+ },
+ "ki67_BreastThyroid": {
+  "n": 21596014,
+  "median_w": 15.0,
+  "median_h": 15.0
+ },
+ "ki67_NET": {
+  "n": 2065108,
+  "median_w": 12.5,
+  "median_h": 12.0
+ }
+}
+wrote /home/work/tksong/lsp-detr/det/scripts/../configs/wh_prior.json

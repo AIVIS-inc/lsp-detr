@@ -1,0 +1,91 @@
+# LSP-DETR-T fine-tune on combined_all_v1_bundle with the Dome-M HER2 recipe.
+# Include chain mirrors AIVIS-Dome-DETR/configs/dome/Dome-M-AITOD.yml exactly, swapping only
+# dataset (combined_tnt) and model include (lsp_swinv2). runtime/dataloader/optimizer are the *Dome files*
+# (relative path to the sibling AIVIS-DETECTION checkout; override with a symlink or edit if the layout differs).
+__include__: [
+  './dataset/combined_tnt_detection.yml',
+  '../../../AIVIS-DETECTION/AIVIS-Dome-DETR/configs/runtime.yml',
+  '../../../AIVIS-DETECTION/AIVIS-Dome-DETR/configs/dome/include/dataloader.yml',
+  '../../../AIVIS-DETECTION/AIVIS-Dome-DETR/configs/dome/include/optimizer.yml',
+  './include/lsp_swinv2.yml',
+]
+
+output_dir: ./output/LSP-T-combined
+
+checkpoint_freq: 1
+
+# Visualization parameters for train_samples and val_samples (Dome-M top-level, kept verbatim)
+num_visualization_batches_per_gpu: 1
+num_visualization_samples_per_batch: null
+visualization_epoch_interval: 5
+visualization_save_rank0_only: false
+num_visualization_sample_batch: 1
+
+eval_spatial_size: [1536, 1536] # h w
+
+# ---- transforms: same ops as Dome include/dataloader.yml except
+#   RandomCropWithGrid -> RandomCropWithGridNoDummy (§6.1, no fake 3x3 class-0 GT on empty crops)
+#   + ImageNetNormalize as the LAST op (§6.2, checkpoint preprocessor uses ImageNet mean/std)
+# (YAML lists do not merge, so the list must be restated in full.)
+train_dataloader:
+  dataset:
+    dataset:
+      transforms:
+        type: Compose
+        ops:
+          - {type: RandomCropWithGridNoDummy, crop_size: 1536, center_gt_size: 672}
+          - {type: ColorJitter, brightness: 0.1, contrast: 0.1, saturation: 0.1, hue: 0.05}
+          - {type: RandomHorizontalFlip, p: 0.5}
+          - {type: RandomVerticalFlip, p: 0.5}
+          - {type: SanitizeBoundingBoxes, min_size: 2}
+          - {type: ConvertPILImage, dtype: 'float32', scale: True}
+          - {type: ConvertBoxes, fmt: 'cxcywh', normalize: True}
+          - {type: RandomGaussianBlur, p: 0.25, kernel_size: [3, 5], sigma: [0.1, 1.0]}
+          - {type: ImageNetNormalize}
+
+val_dataloader:
+  dataset:
+    transforms:
+      ops:
+        - {type: Resize, size: [1536, 1536], }
+        - {type: ConvertPILImage, dtype: 'float32', scale: True}
+        - {type: ImageNetNormalize}
+
+DomePostProcessor:
+  num_top_queries: 2000  # official A/B metric (production auxiliary top-4000 via det/scripts/eval_topk.py)
+  use_nms: true
+  nms_iou_threshold: 0.7
+  nms_score_threshold: 0.01
+  class_agnostic: true
+  keep_topk_after_nms: null
+
+# ---- optimizer: 3 mutually exclusive regex groups + default (§7).
+#  Dome-M uses 2 groups; here the HF Swinv2 parameter paths contain ".encoder." so Dome's no-decay regex
+#  would capture backbone LayerNorms at base LR. Groups:
+#   [0] backbone, non-norm      lr 1.25e-5, wd 1.25e-4
+#   [1] backbone, norm          lr 1.25e-5, wd 0
+#   [2] non-backbone norm       lr 2.5e-4,  wd 0   (decoder.*_norm, feature_sampling.norm)
+#   [3] default (rest)          lr 2.5e-4,  wd 1.25e-4
+optimizer:
+  type: AdamW
+  params:
+    - params: '^(?=.*backbone)(?!.*norm|bn).*$'
+      lr: 1.25e-05
+    - params: '^(?=.*backbone)(?=.*norm).*$'
+      lr: 1.25e-05
+      weight_decay: 0.0
+    - params: '^(?!.*backbone)(?=.*norm).*$'
+      weight_decay: 0.0
+  lr: 0.00025
+  betas: [0.9, 0.999]
+  weight_decay: 0.000125
+
+lr_scheduler:
+  type: MultiStepLR
+  milestones: [24, 30]
+  gamma: 0.8
+
+epochs: 30   # dead key kept for parity with Dome-M-AITOD.yml (the solver reads `epoches` from optimizer.yml / CLI)
+
+lr_warmup_scheduler:
+  warmup_duration: 0

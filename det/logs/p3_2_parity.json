@@ -1,0 +1,92 @@
+{
+  "backbone.stage1": {
+    "max_abs": 0.0,
+    "mean_abs": 0.0,
+    "max_rel": 0.0,
+    "shape": [
+      1,
+      96,
+      64,
+      64
+    ]
+  },
+  "backbone.stage2": {
+    "max_abs": 0.0,
+    "mean_abs": 0.0,
+    "max_rel": 0.0,
+    "shape": [
+      1,
+      192,
+      32,
+      32
+    ]
+  },
+  "backbone.stage3": {
+    "max_abs": 0.0,
+    "mean_abs": 0.0,
+    "max_rel": 0.0,
+    "shape": [
+      1,
+      384,
+      16,
+      16
+    ]
+  },
+  "backbone.stage4": {
+    "max_abs": 0.0,
+    "mean_abs": 0.0,
+    "max_rel": 0.0,
+    "shape": [
+      1,
+      768,
+      8,
+      8
+    ]
+  },
+  "embeddings": {
+    "max_abs": 8.094310760498047e-05,
+    "mean_abs": 1.3545650290325284e-06,
+    "max_rel": 1.2897802662337199e-05,
+    "shape": [
+      1,
+      324,
+      384
+    ]
+  },
+  "points(norm)": {
+    "max_abs": 1.0728836059570312e-06,
+    "mean_abs": 1.6196560537196092e-08,
+    "max_rel": 1.0823620186783955e-06,
+    "shape": [
+      1,
+      324,
+      2
+    ]
+  },
+  "points(px@256)": {
+    "max_abs": 0.000274658203125,
+    "mean_abs": 4.1463194975221995e-06,
+    "max_rel": 1.0823620186783955e-06,
+    "shape": [
+      1,
+      324,
+      2
+    ]
+  },
+  "cachedP": {
+    "snapshot_cachedP_vs_current": 0.271098330142362,
+    "port_P_vs_f64": 1.9299872766609383e-07,
+    "snapshot_eval_delta": 0.0,
+    "port_eval_delta": 3.27378511428833e-05,
+    "port_eval_vs_train": 4.45246696472168e-05,
+    "snapshot_eval_vs_train": 0.00010147690773010254
+  },
+  "geometry_1536_vs_256_at_256_input": [
+    0.0,
+    0.0,
+    14.225937843322754,
+    107.8200912475586
+  ],
+  "tf32_mode": "off",
+  "pass": true
+}

@@ -1,0 +1,3 @@
+loaded /home/work/.mnt/combined_all_v1_bundle/train_coco.json in 93s
+wrote /home/work/.mnt/combined_all_v1_bundle_derived/train_coco_areafix.json in 282s: filled area 1924260, iscrowd 1924260; anns 43953630 images 18678
+verified reload in 171s: all annotations have area/iscrowd

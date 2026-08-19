@@ -1,0 +1,148 @@
+==========================================
+LSP-DETR Distributed Training (hf-5class fine-tune)
+==========================================
+Arm: strict-local
+GPUs: 8 (0,1,2,3,4,5,6,7)
+Train batch: 8 total (1 per GPU)
+Validation batch: 8 total
+Config: configs/LSP-T-combined.yml
+Output: logs/p3_4_ddp8
+End epochs: 1
+Seed: 0
+Extra updates: train_dataloader.dataset.dataset.ann_file=/home/work/tksong/lsp-detr/det/logs/smoke_data/train_subset.json val_dataloader.dataset.ann_file=/home/work/tksong/lsp-detr/det/logs/smoke_data/val_subset.json train_dataloader.num_workers=2 val_dataloader.num_workers=2
+TF32 policy: keep
+==========================================
+
+SAVE_INTERMEDIATE_VISUALIZE_RESULT: False
+SAVE_INTERMEDIATE_VISUALIZE_RESULT: False
+SAVE_INTERMEDIATE_VISUALIZE_RESULT: False
+SAVE_INTERMEDIATE_VISUALIZE_RESULT: False
+SAVE_INTERMEDIATE_VISUALIZE_RESULT: False
+SAVE_INTERMEDIATE_VISUALIZE_RESULT: False
+SAVE_INTERMEDIATE_VISUALIZE_RESULT: False
+SAVE_INTERMEDIATE_VISUALIZE_RESULT: False
+SAVE_INTERMEDIATE_VISUALIZE_RESULT: False
+SAVE_INTERMEDIATE_VISUALIZE_RESULT: False
+SAVE_INTERMEDIATE_VISUALIZE_RESULT: False
+SAVE_INTERMEDIATE_VISUALIZE_RESULT: False
+SAVE_INTERMEDIATE_VISUALIZE_RESULT: False
+SAVE_INTERMEDIATE_VISUALIZE_RESULT: False
+SAVE_INTERMEDIATE_VISUALIZE_RESULT: False
+SAVE_INTERMEDIATE_VISUALIZE_RESULT: False
+NCCL version 2.29.7+cuda13.2
+Initialized distributed mode...
+[tf32] mode=keep matmul.allow_tf32=True cudnn.allow_tf32=True float32_matmul_precision=high TORCH_ALLOW_TF32_CUBLAS_OVERRIDE=1
+cfg:  {'task': 'detection', '_model': None, '_postprocessor': None, '_criterion': None, '_optimizer': None, '_lr_scheduler': None, '_lr_warmup_scheduler': None, '_train_dataloader': None, '_val_dataloader': None, '_ema': None, '_scaler': None, '_train_dataset': None, '_val_dataset': None, '_collate_fn': None, '_evaluator': None, '_writer': None, 'num_workers': 0, 'batch_size': None, '_train_batch_size': None, '_val_batch_size': None, '_train_shuffle': None, '_val_shuffle': None, 'resume': None, 'tuning': None, 'epoches': 1, 'last_epoch': -1, 'use_amp': False, 'use_ema': True, 'ema_decay': 0.9999, 'ema_warmups': 2000, 'sync_bn': True, 'clip_max_norm': 0.1, 'find_unused_parameters': False, 'seed': 0, 'print_freq': 100, 'checkpoint_freq': 1, 'output_dir': 'logs/p3_4_ddp8', 'summary_dir': None, 'device': '', 'yaml_cfg': {'task': 'detection', 'evaluator': {'type': 'AitodCocoEvaluator', 'iou_types': ['bbox']}, 'num_classes': 2, 'remap_mscoco_category': False, 'train_dataloader': {'type': 'DataLoader', 'dataset': {'type': 'MultiCropDatasetWrapper', 'crops_per_image': 16, 'large_threshold_multiplier': 2, 'crop_size': 1536, 'grid_selection_strategy': 'random', 'seed': None, 'dataset': {'type': 'CocoDetection', 'img_folder': '/home/work/.mnt/combined_all_v1_bundle', 'ann_file': '/home/work/tksong/lsp-detr/det/logs/smoke_data/train_subset.json', 'return_masks': False, 'transforms': {'type': 'Compose', 'ops': [{'type': 'RandomCropWithGridNoDummy', 'crop_size': 1536, 'center_gt_size': 672}, {'type': 'ColorJitter', 'brightness': 0.1, 'contrast': 0.1, 'saturation': 0.1, 'hue': 0.05}, {'type': 'RandomHorizontalFlip', 'p': 0.5}, {'type': 'RandomVerticalFlip', 'p': 0.5}, {'type': 'SanitizeBoundingBoxes', 'min_size': 2}, {'type': 'ConvertPILImage', 'dtype': 'float32', 'scale': True}, {'type': 'ConvertBoxes', 'fmt': 'cxcywh', 'normalize': True}, {'type': 'RandomGaussianBlur', 'p': 0.25, 'kernel_size': [3, 5], 'sigma': [0.1, 1.0]}, {'type': 'ImageNetNormalize'}]}}}, 'shuffle': True, 'num_workers': 2, 'drop_last': True, 'persistent_workers': True, 'collate_fn': {'type': 'BatchImageCollateFunction'}, 'total_batch_size': 8}, 'val_dataloader': {'type': 'DataLoader', 'dataset': {'type': 'CocoDetection', 'img_folder': '/home/work/.mnt/combined_all_v1_bundle', 'ann_file': '/home/work/tksong/lsp-detr/det/logs/smoke_data/val_subset.json', 'return_masks': False, 'transforms': {'type': 'Compose', 'ops': [{'type': 'Resize', 'size': [1536, 1536]}, {'type': 'ConvertPILImage', 'dtype': 'float32', 'scale': True}, {'type': 'ImageNetNormalize'}]}}, 'shuffle': False, 'num_workers': 2, 'drop_last': False, 'collate_fn': {'type': 'BatchImageCollateFunction'}, 'total_batch_size': 8}, 'print_freq': 100, 'output_dir': 'logs/p3_4_ddp8', 'checkpoint_freq': 1, 'sync_bn': True, 'find_unused_parameters': False, 'use_amp': False, 'scaler': {'type': 'GradScaler', 'enabled': True}, 'use_ema': True, 'ema': {'type': 'ModelEMA', 'decay': 0.9999, 'warmups': 1000, 'start': 0}, 'epoches': 1, 'clip_max_norm': 0.1, 'optimizer': {'type': 'AdamW', 'params': [{'params': '^(?=.*backbone)(?!.*norm|bn).*$', 'lr': 1.25e-05}, {'params': '^(?=.*backbone)(?=.*norm).*$', 'lr': 1.25e-05, 'weight_decay': 0.0}, {'params': '^(?!.*backbone)(?=.*norm).*$', 'weight_decay': 0.0}], 'lr': 0.00025, 'betas': [0.9, 0.999], 'weight_decay': 0.000125}, 'lr_scheduler': {'type': 'MultiStepLR', 'milestones': [24, 30], 'gamma': 0.8}, 'lr_warmup_scheduler': {'type': 'LinearWarmup', 'warmup_duration': 0}, 'model': 'LSPDetrDetection', 'criterion': 'LSPCriterion', 'postprocessor': 'DomePostProcessor', 'use_focal_loss': True, 'eval_spatial_size': [1536, 1536], 'LSPDetrDetection': {'num_classes': 2, 'dim': 384, 'num_heads': 12, 'query_block_size': 14.222222222222223, 'feature_levels': [2, 1, 0, 2, 1, 0], 'self_sta_config': {'kernel': 3, 'q_tile': 3, 'kv_tile': 3}, 'cross_sta_config': [{'kernel': 5, 'q_tile': 3, 'kv_tile': 8}, {'kernel': 5, 'q_tile': 3, 'kv_tile': 4}, {'kernel': 5, 'q_tile': 3, 'kv_tile': 2}], 'backbone_image_size': 1536, 'backbone_window_size': 16, 'backbone_drop_path_rate': 0.1, 'backbone_freeze_at': 1, 'backbone_freeze_patch_embed': True, 'wh_prior_px': [14.0, 14.0], 'center_mode': 'strict-local', 'movable_span_cells': 3.0, 'feature_sampling_fixed': False, 'pretrained': '/home/work/tksong/lsp-detr/hf-5class/model.safetensors', 'pretrained_arm': None, 'expect_imagenet_norm': True, 'input_norm_check': 'warn'}, 'LSPCriterion': {'weight_dict': {'loss_vfl': 3, 'loss_bbox': 3, 'loss_giou': 1}, 'losses': ['vfl', 'boxes'], 'alpha': 0.75, 'gamma': 2.0, 'use_uni_set': True, 'matcher': {'type': 'HungarianMatcher', 'weight_dict': {'cost_class': 3, 'cost_bbox': 3, 'cost_giou': 1}, 'alpha': 0.25, 'gamma': 2.0}}, '__include__': ['./dataset/combined_tnt_detection.yml', '../../../AIVIS-DETECTION/AIVIS-Dome-DETR/configs/runtime.yml', '../../../AIVIS-DETECTION/AIVIS-Dome-DETR/configs/dome/include/dataloader.yml', '../../../AIVIS-DETECTION/AIVIS-Dome-DETR/configs/dome/include/optimizer.yml', './include/lsp_swinv2.yml'], 'num_visualization_batches_per_gpu': 1, 'num_visualization_samples_per_batch': None, 'visualization_epoch_interval': 5, 'visualization_save_rank0_only': False, 'num_visualization_sample_batch': 1, 'DomePostProcessor': {'num_top_queries': 2000, 'use_nms': True, 'nms_iou_threshold': 0.7, 'nms_score_threshold': 0.01, 'class_agnostic': True, 'keep_topk_after_nms': None}, 'epochs': 30, 'config': 'configs/LSP-T-combined.yml', 'seed': 0, 'test_only': False, 'print_method': 'builtin', 'print_rank': 0}}
+[hf5class] arm=strict-local loaded 418/432 tensors (44,874,294 params, coverage 99.99% of 44,879,684); dropped 14 source tensors; new params 5,390
+====================================================================================================
+[optim audit] trainable tensors=387 (44,571,038 params), frozen tensors=45 (308,646 params), base lr=0.00025 wd=0.000125
+  group[0] lr=1.250e-05 wd=1.250e-04 tensors=  152 params=  27,248,772  pattern=^(?=.*backbone)(?!.*norm|bn).*$
+  group[1] lr=1.250e-05 wd=0.000e+00 tensors=   44 params=      19,200  pattern=^(?=.*backbone)(?=.*norm).*$
+  group[2] lr=2.500e-04 wd=0.000e+00 tensors=   38 params=      14,592  pattern=^(?!.*backbone)(?=.*norm).*$
+  group[3] lr=2.500e-04 wd=1.250e-04 tensors=  153 params=  17,288,474  pattern=<default/unmatched>
+====================================================================================================
+[hf5class] init: arm=strict-local loaded_tensors=418 loaded_params=44,874,294 coverage=99.99% new_params=5,390
+Initial lr: [1.25e-05, 1.25e-05, 0.00025, 0.00025]
+building train_dataloader with batch_size=1...
+[CocoDetection] Dataset loaded: 24 images from /home/work/tksong/lsp-detr/det/logs/smoke_data/train_subset.json
+[MultiCropDatasetWrapper] Using COCO metadata for fast initialization...
+[MultiCropDatasetWrapper] Image crop analysis:
+  - Size thresholds: small < 1536, medium < 3072, large ≥ 3072
+  - Small images (< 1536): 24 (1 crop each)
+  - Medium images (1536 ≤ size < 3072): 0 (3 crops each)
+  - Large images (≥ 3072): 0 (16 crops each)
+  - Total crops: 24
+[Rank 0] MultiCropDistributedSampler initialized (adaptive mode):
+  - Original images: 24
+  - Total crops: 24
+  - Samples per GPU: 3
+building val_dataloader with batch_size=1...
+[CocoDetection] Dataset loaded: 16 images from /home/work/tksong/lsp-detr/det/logs/smoke_data/val_subset.json
+[Rank 0] DistributedSampler initialized:
+  - Total images: 16
+  - Samples per GPU: 2
+  - Batch size: 1
+  - Total batches per GPU: 2
+⚠️  FLOPs calculation failed (skipped): 'LSPDetrDetection' object has no attribute 'deploy'
+Parameters: 44879684
+------------------------------------------Start training-------------------------------------------
+Visualization parameters:
+  num_visualization_batches_per_gpu: 1
+  num_visualization_samples_per_batch: None
+  visualization_epoch_interval: 1
+  visualization_save_rank0_only: False
+  num_visualization_sample_batch: 1
+  output_dir: logs/p3_4_ddp8
+----------------------------------------------------------------------------------------------------
+Train starting...
+[Visualization] Saving train samples: epoch=0, batch=0, rank=0
+  visualization_epoch_interval=1, should_save_epoch=True
+  num_visualization_batches_per_gpu=1, should_save_batch=True
+  visualization_save_rank0_only=False, should_save_rank=True
+  output_dir=logs/p3_4_ddp8
+/home/work/miniconda3/envs/dome/lib/python3.11/site-packages/torch/autograd/graph.py:979: UserWarning: Grad strides do not match bucket view strides. This may indicate grad was not created according to the gradient layout contract, or that the param's strides changed since DDP was constructed.  This is not an error, but may impair performance.
+grad.sizes() = [384, 768, 1, 1], strides() = [768, 1, 768, 768]
+bucket_view.sizes() = [384, 768, 1, 1], strides() = [768, 1, 1, 1] (Triggered internally at /__w/pytorch/pytorch/torch/csrc/distributed/c10d/reducer.cpp:335.)
+  return Variable._execution_engine.run_backward(  # Calls into the C++ engine to run the backward pass
+/home/work/miniconda3/envs/dome/lib/python3.11/site-packages/torch/autograd/graph.py:979: UserWarning: Grad strides do not match bucket view strides. This may indicate grad was not created according to the gradient layout contract, or that the param's strides changed since DDP was constructed.  This is not an error, but may impair performance.
+grad.sizes() = [384, 768, 1, 1], strides() = [768, 1, 768, 768]
+bucket_view.sizes() = [384, 768, 1, 1], strides() = [768, 1, 1, 1] (Triggered internally at /__w/pytorch/pytorch/torch/csrc/distributed/c10d/reducer.cpp:335.)
+  return Variable._execution_engine.run_backward(  # Calls into the C++ engine to run the backward pass
+/home/work/miniconda3/envs/dome/lib/python3.11/site-packages/torch/autograd/graph.py:979: UserWarning: Grad strides do not match bucket view strides. This may indicate grad was not created according to the gradient layout contract, or that the param's strides changed since DDP was constructed.  This is not an error, but may impair performance.
+grad.sizes() = [384, 768, 1, 1], strides() = [768, 1, 768, 768]
+bucket_view.sizes() = [384, 768, 1, 1], strides() = [768, 1, 1, 1] (Triggered internally at /__w/pytorch/pytorch/torch/csrc/distributed/c10d/reducer.cpp:335.)
+  return Variable._execution_engine.run_backward(  # Calls into the C++ engine to run the backward pass
+/home/work/miniconda3/envs/dome/lib/python3.11/site-packages/torch/autograd/graph.py:979: UserWarning: Grad strides do not match bucket view strides. This may indicate grad was not created according to the gradient layout contract, or that the param's strides changed since DDP was constructed.  This is not an error, but may impair performance.
+grad.sizes() = [384, 768, 1, 1], strides() = [768, 1, 768, 768]
+bucket_view.sizes() = [384, 768, 1, 1], strides() = [768, 1, 1, 1] (Triggered internally at /__w/pytorch/pytorch/torch/csrc/distributed/c10d/reducer.cpp:335.)
+  return Variable._execution_engine.run_backward(  # Calls into the C++ engine to run the backward pass
+/home/work/miniconda3/envs/dome/lib/python3.11/site-packages/torch/autograd/graph.py:979: UserWarning: Grad strides do not match bucket view strides. This may indicate grad was not created according to the gradient layout contract, or that the param's strides changed since DDP was constructed.  This is not an error, but may impair performance.
+grad.sizes() = [384, 768, 1, 1], strides() = [768, 1, 768, 768]
+bucket_view.sizes() = [384, 768, 1, 1], strides() = [768, 1, 1, 1] (Triggered internally at /__w/pytorch/pytorch/torch/csrc/distributed/c10d/reducer.cpp:335.)
+  return Variable._execution_engine.run_backward(  # Calls into the C++ engine to run the backward pass
+/home/work/miniconda3/envs/dome/lib/python3.11/site-packages/torch/autograd/graph.py:979: UserWarning: Grad strides do not match bucket view strides. This may indicate grad was not created according to the gradient layout contract, or that the param's strides changed since DDP was constructed.  This is not an error, but may impair performance.
+grad.sizes() = [384, 768, 1, 1], strides() = [768, 1, 768, 768]
+bucket_view.sizes() = [384, 768, 1, 1], strides() = [768, 1, 1, 1] (Triggered internally at /__w/pytorch/pytorch/torch/csrc/distributed/c10d/reducer.cpp:335.)
+  return Variable._execution_engine.run_backward(  # Calls into the C++ engine to run the backward pass
+/home/work/miniconda3/envs/dome/lib/python3.11/site-packages/torch/autograd/graph.py:979: UserWarning: Grad strides do not match bucket view strides. This may indicate grad was not created according to the gradient layout contract, or that the param's strides changed since DDP was constructed.  This is not an error, but may impair performance.
+grad.sizes() = [384, 768, 1, 1], strides() = [768, 1, 768, 768]
+bucket_view.sizes() = [384, 768, 1, 1], strides() = [768, 1, 1, 1] (Triggered internally at /__w/pytorch/pytorch/torch/csrc/distributed/c10d/reducer.cpp:335.)
+  return Variable._execution_engine.run_backward(  # Calls into the C++ engine to run the backward pass
+/home/work/miniconda3/envs/dome/lib/python3.11/site-packages/torch/autograd/graph.py:979: UserWarning: Grad strides do not match bucket view strides. This may indicate grad was not created according to the gradient layout contract, or that the param's strides changed since DDP was constructed.  This is not an error, but may impair performance.
+grad.sizes() = [384, 768, 1, 1], strides() = [768, 1, 768, 768]
+bucket_view.sizes() = [384, 768, 1, 1], strides() = [768, 1, 1, 1] (Triggered internally at /__w/pytorch/pytorch/torch/csrc/distributed/c10d/reducer.cpp:335.)
+  return Variable._execution_engine.run_backward(  # Calls into the C++ engine to run the backward pass
+Epoch: [0]  [0/3]  eta: 0:01:17  lr: 0.000013  loss: 20.8569 (20.8569)  loss_bbox: 0.0341 (0.0341)  loss_bbox_aux_0: 0.0368 (0.0368)  loss_bbox_aux_1: 0.0344 (0.0344)  loss_bbox_aux_2: 0.0342 (0.0342)  loss_bbox_aux_3: 0.0343 (0.0343)  loss_bbox_aux_4: 0.0342 (0.0342)  loss_giou: 0.6918 (0.6918)  loss_giou_aux_0: 0.7687 (0.7687)  loss_giou_aux_1: 0.7064 (0.7064)  loss_giou_aux_2: 0.6951 (0.6951)  loss_giou_aux_3: 0.6988 (0.6988)  loss_giou_aux_4: 0.6942 (0.6942)  loss_vfl: 3.0378 (3.0378)  loss_vfl_aux_0: 2.2650 (2.2650)  loss_vfl_aux_1: 2.6378 (2.6378)  loss_vfl_aux_2: 2.8222 (2.8222)  loss_vfl_aux_3: 2.7623 (2.7623)  loss_vfl_aux_4: 2.8686 (2.8686)  time: 25.8205  data: 0.5551  max mem: 14036
+Epoch: [0]  [2/3]  eta: 0:00:09  lr: 0.000013  loss: 20.8569 (20.3374)  loss_bbox: 0.0392 (0.0393)  loss_bbox_aux_0: 0.0425 (0.0426)  loss_bbox_aux_1: 0.0397 (0.0398)  loss_bbox_aux_2: 0.0394 (0.0394)  loss_bbox_aux_3: 0.0394 (0.0395)  loss_bbox_aux_4: 0.0393 (0.0393)  loss_giou: 0.6918 (0.6911)  loss_giou_aux_0: 0.7687 (0.7827)  loss_giou_aux_1: 0.7064 (0.7089)  loss_giou_aux_2: 0.6951 (0.6959)  loss_giou_aux_3: 0.6988 (0.6972)  loss_giou_aux_4: 0.6942 (0.6932)  loss_vfl: 3.0378 (3.0020)  loss_vfl_aux_0: 1.5686 (1.7976)  loss_vfl_aux_1: 2.5380 (2.3004)  loss_vfl_aux_2: 2.8222 (2.5474)  loss_vfl_aux_3: 2.7623 (3.0578)  loss_vfl_aux_4: 2.8686 (3.1233)  time: 9.7377  data: 0.1860  max mem: 17505
+Epoch: [0] Total time: 0:00:29 (9.7769 s / it)
+Averaged stats: lr: 0.000013  loss: 20.8569 (20.3374)  loss_bbox: 0.0392 (0.0393)  loss_bbox_aux_0: 0.0425 (0.0426)  loss_bbox_aux_1: 0.0397 (0.0398)  loss_bbox_aux_2: 0.0394 (0.0394)  loss_bbox_aux_3: 0.0394 (0.0395)  loss_bbox_aux_4: 0.0393 (0.0393)  loss_giou: 0.6918 (0.6911)  loss_giou_aux_0: 0.7687 (0.7827)  loss_giou_aux_1: 0.7064 (0.7089)  loss_giou_aux_2: 0.6951 (0.6959)  loss_giou_aux_3: 0.6988 (0.6972)  loss_giou_aux_4: 0.6942 (0.6932)  loss_vfl: 3.0378 (3.0020)  loss_vfl_aux_0: 1.5686 (1.7976)  loss_vfl_aux_1: 2.5380 (2.3004)  loss_vfl_aux_2: 2.8222 (2.5474)  loss_vfl_aux_3: 2.7623 (3.0578)  loss_vfl_aux_4: 2.8686 (3.1233)
+Training state finished.
+Evaluate state starting...
+[Visualization] Saving val samples: epoch=0, batch=0, global_step=0
+  num_visualization_sample_batch=1, output_dir=logs/p3_4_ddp8
+Test:  [0/2]  eta: 0:00:05    time: 2.6550  data: 0.2881  max mem: 17505
+Test:  [1/2]  eta: 0:00:01    time: 1.6314  data: 0.1441  max mem: 17505
+Test: Total time: 0:00:03 (1.6693 s / it)
+Averaged stats: 
+Accumulating evaluation results...
+COCOeval_opt.accumulate() finished...
+DONE (t=0.14s).
+IoU metric: bbox
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=2000 ] = 0.005
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=2000 ] = 0.020
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=verytiny | maxDets=2000 ] = 0.000
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=  tiny | maxDets=2000 ] = 0.004
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=2000 ] = 0.026
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=2000 ] = 0.000
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=500 ] = 0.042
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=1000 ] = 0.063
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=2000 ] = 0.067
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=verytiny | maxDets=2000 ] = 0.000
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=  tiny | maxDets=2000 ] = 0.063
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=2000 ] = 0.078
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=2000 ] = 0.000
+current_stat: 0.005432395395034148
+best_stat: {'epoch': 0, 'coco_eval_bbox': 0.005432395395034148}
+Training time 0:00:40
+
+Training completed!

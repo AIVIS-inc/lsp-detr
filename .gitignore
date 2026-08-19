@@ -179,3 +179,11 @@ lightning_logs/
 
 # Project
 /data
+
+# ---- det/ (LSP-DETR bbox port): environment-specific / large artefacts
+det/output
+det/logs/p3_4_ddp2
+det/logs/p3_4_ddp8
+hf-5class/*.safetensors
+hf-5class/*.pth
+hf-5class/.gitattributes
