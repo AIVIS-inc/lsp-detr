@@ -43,7 +43,18 @@ from . import transforms as transforms  # noqa: E402,F401
 from . import lsp_trunk as lsp_trunk  # noqa: E402,F401
 from . import checkpoint as checkpoint  # noqa: E402,F401
 from . import lsp_detr_det as lsp_detr_det  # noqa: E402,F401
-from . import lsp_criterion as lsp_criterion  # noqa: E402,F401
+try:  # training-only component
+    from . import lsp_criterion as lsp_criterion  # noqa: E402,F401
+except ImportError as _e:  # pragma: no cover - depends on the $DOME_ROOT checkout
+    # ``lsp_criterion`` needs ``_get_match_pool`` from Dome's dome_criterion; older Dome
+    # checkouts do not have it. Nothing on the inference path (det/inference.py,
+    # det/wsi_infer.py) builds a criterion, so keep the package importable and let
+    # det/train.py raise on ``CRITERION_IMPORT_ERROR`` instead.
+    lsp_criterion = None  # type: ignore[assignment]
+    CRITERION_IMPORT_ERROR: "Exception | None" = _e
+else:
+    CRITERION_IMPORT_ERROR = None
 from . import optim_audit as optim_audit  # noqa: E402,F401
 
-__all__ = ["DOME_ROOT", "DET_ROOT", "LSP_REPO_ROOT", "HF5CLASS_CKPT", "bootstrap_dome"]
+__all__ = ["DOME_ROOT", "DET_ROOT", "LSP_REPO_ROOT", "HF5CLASS_CKPT", "bootstrap_dome",
+           "CRITERION_IMPORT_ERROR"]

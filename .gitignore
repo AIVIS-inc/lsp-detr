@@ -184,6 +184,11 @@ lightning_logs/
 det/output
 det/logs/p3_4_ddp2
 det/logs/p3_4_ddp8
+# 684 MB checkpoint; the canonical copy lives on /mnt/nas2/LSP-DETR/TNT/best_stg1.pth
+det/ckpt
+# whole-slide inputs and the WSI inference / combine artefacts (.zst, COCO json, logs)
+/wsi
+/results
 hf-5class/*.safetensors
 hf-5class/*.pth
 hf-5class/.gitattributes

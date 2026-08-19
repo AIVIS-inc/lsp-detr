@@ -47,6 +47,10 @@ def main(args) -> None:
     update_dict = yaml_utils.parse_cli(args.update)
     update_dict.update({k: v for k, v in args.__dict__.items() if k not in ["update", "skip_optim_audit", "tf32"] and v is not None})
 
+    if lsp_det.CRITERION_IMPORT_ERROR is not None:
+        raise ImportError("LSPCriterion is unavailable, so training cannot run: "
+                          f"{lsp_det.CRITERION_IMPORT_ERROR} (check $DOME_ROOT)")
+
     cfg = YAMLConfig(args.config, **update_dict)
     print("cfg: ", cfg.__dict__)
 
