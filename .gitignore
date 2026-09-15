@@ -192,3 +192,5 @@ det/ckpt
 hf-5class/*.safetensors
 hf-5class/*.pth
 hf-5class/.gitattributes
+# GPU-Hungarian benchmark artefacts (1.4 GB: captured cost matrices, wheels, results) - see POST_TRAINING_TODO.md §7
+det/.gpu_lap/

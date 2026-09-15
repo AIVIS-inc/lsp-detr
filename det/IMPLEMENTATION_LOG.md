@@ -248,3 +248,22 @@ registration through `det/lsp_det/__init__.py`.
   (verytiny GT are rare, so a handful of 'all'-area entries inflate it). Affects every 8-GPU log.txt on this val set
   (Dome/ConvNeXt baselines included); overall AP/AP50 shift ≤ 0.001. Trust the subset stats only from single-process evals
   (`det/inference.py` with GT_JSON, or `train.py --test-only` on one GPU).
+
+## 2026-08-27 — P4 strict-local 30-epoch run COMPLETE
+
+* Run `[combined]LSP-T_strict-local_H100x8_hf5class-ft_30ep` finished 2026-08-27 12:34 KST (launch #3 resume from ep0,
+  solver "Training time 8 days, 20:17:09"; launch #2 had produced ep0 before dying of ENOSPC on 08-18). No NaN, no crash;
+  15 benign CUDA caching-allocator OOM warnings on 08-19/20 (allocator retried), none after.
+* **Final = best = ep29 EMA: AP 0.6154 / AP50 0.8749 / AR@2000 0.6711** (ep0: 0.429 / 0.804 / 0.497). Val AP rose every
+  epoch; AP50 plateaued at 0.870–0.871 from ep14 and moved only after the ep24 LR ×0.8 milestone (ep25 +0.34 pp).
+  Last-3-epoch ΔAP +0.08/+0.03/+0.10 pp → converged; not worth extending at this LR (analysis in the report §6).
+* Pace: 2.83 s/it (ep0) drifting to 4.00–4.07 s/it (ep24–29), 7.2–7.5 h per epoch incl. ~10 min eval; CPU
+  Hungarian matcher-bound. Checkpoints 30 × 716 MB + best + last ≈ 22.9 GB on the NFS mount.
+* Full record (per-epoch CSV + markdown table, iteration-level loss CSV, 5 figures, timeline/incidents, caveats,
+  regeneration script): `det/reports/260827-p4-strict-local-30ep/REPORT.md`; copy in `<run>/report/`.
+* Correction: the Dome AITOD evaluator's 13 stats are AP, AP50, AP_verytiny, AP_tiny, AP_small, AP_medium, AR@500/1000/2000,
+  AR_vt/tiny/small/medium — there is **no AP75**. Index 2 (0.4553 at ep29) is AP_verytiny, an 8-GPU merge()-polluted
+  subset stat, not AP75 as it was called during the daily checks.
+* Next: POST_TRAINING_TODO §1 (Dome dependency pin) → §2 (resume arm guard, required before movable-reference) →
+  single-process re-eval of ep29 with `det/inference.py TILING=off` for true area-subset stats → P5 Dome baseline /
+  movable-reference arm. GPUs are idle from 12:34.

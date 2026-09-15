@@ -26,7 +26,10 @@ ARM=${ARM:-strict-local}
 # Outputs MUST live on the NFS mount: /home/work is a 49 GB loop device and 30 epochs of checkpoints need >23 GB
 # (launch #2 died with ENOSPC on 2026-08-18). det/output is a symlink to this directory.
 OUTPUT_ROOT=${OUTPUT_ROOT:-/home/work/.mnt/DET_RESULT/lsp_detr}
-OUTPUT_DIR=${OUTPUT_DIR:-"${OUTPUT_ROOT}/[combined]LSP-T_${ARM}_H100x${NUM_GPUS}_hf5class-ft_${END_EPOCHS}ep"}
+# Tag derived from CONFIG (review 2026-09-04): the old literal "[combined]" default made a CONFIG-only HER2
+# launch write into the COMPLETED TNT run's directory and overwrite its checkpoints.
+CFG_TAG=$(basename "${CONFIG%.yml}"); CFG_TAG=${CFG_TAG#LSP-T-}
+OUTPUT_DIR=${OUTPUT_DIR:-"${OUTPUT_ROOT}/[${CFG_TAG}]LSP-T_${ARM}_H100x${NUM_GPUS}_hf5class-ft_${END_EPOCHS}ep"}
 SEED=${SEED:-0}
 PYTHON=${PYTHON:-/home/work/miniconda3/envs/dome/bin/python}
 EXTRA_UPDATES=${EXTRA_UPDATES:-""}
@@ -77,6 +80,11 @@ export NCCL_DEBUG_SUBSYS=INIT,COLL
 # Solve the per-layer Hungarian matches on a thread pool inside the loss (result-identical speedup).
 export DOME_MATCH_THREADS=${DOME_MATCH_THREADS:-6}
 
+# refuse to clobber an existing run (fresh launches only; resume passes RESUME=)
+if [ -z "${RESUME}" ] && { [ -e "${OUTPUT_DIR}/last.pth" ] || [ -e "${OUTPUT_DIR}/log.txt" ] || ls "${OUTPUT_DIR}"/checkpoint*.pth >/dev/null 2>&1; }; then
+    echo "Error: OUTPUT_DIR ${OUTPUT_DIR} already contains a run (last.pth/log.txt/checkpoint*). Set RESUME=... to resume or choose another OUTPUT_DIR." >&2
+    exit 1
+fi
 mkdir -p "${OUTPUT_DIR}"
 
 UPDATES=(epoches=${END_EPOCHS}

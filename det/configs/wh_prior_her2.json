@@ -1,0 +1,64 @@
+{
+  "ann_file": "/home/work/.mnt/DET_DATA/new_merged_all/train.json",
+  "num_images": 60272,
+  "num_annotations": 53860932,
+  "median_w": 14.0,
+  "median_h": 14.0,
+  "log_median_w": 2.6390573296152584,
+  "log_median_h": 2.6390573296152584,
+  "w": {
+    "p05": 8.0,
+    "p25": 12.0,
+    "median": 14.0,
+    "p75": 18.0,
+    "p95": 24.0,
+    "mean": 15.005880961733078
+  },
+  "h": {
+    "p05": 8.0,
+    "p25": 12.0,
+    "median": 14.0,
+    "p75": 18.0,
+    "p95": 24.0,
+    "mean": 14.960123993398405
+  },
+  "per_class": {
+    "0": {
+      "n": 17653760,
+      "median_w": 16.0,
+      "median_h": 16.0
+    },
+    "1": {
+      "n": 4132992,
+      "median_w": 17.0,
+      "median_h": 17.0
+    },
+    "2": {
+      "n": 827748,
+      "median_w": 19.0,
+      "median_h": 18.0
+    },
+    "3": {
+      "n": 681900,
+      "median_w": 21.0,
+      "median_h": 20.0
+    },
+    "4": {
+      "n": 30564532,
+      "median_w": 13.0,
+      "median_h": 13.0
+    }
+  },
+  "per_source": {
+    "?": {
+      "n": 53860932,
+      "median_w": 14.0,
+      "median_h": 14.0
+    }
+  },
+  "images_without_annotations": 0,
+  "image_sizes": {
+    "4096x4096": 1448,
+    "1536x1536": 58824
+  }
+}

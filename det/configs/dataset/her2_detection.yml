@@ -1,0 +1,60 @@
+# new_merged_all (5-class HER2: 0=NegT, 1=1+, 2=2+, 3=3+, 4=NonT) - counterpart of
+# combined_tnt_detection.yml, paths/num_classes swapped to the dataset the Dome-M/D3R/ConvNeXt/TSC
+# HER2 baselines were trained on (AIVIS-Dome-DETR configs/dataset/coco_detection.yml).
+# All annotations carry area/iscrowd (audited 2026-08-31) -> no areafix derivative needed.
+# `crop_size: 1536` on the wrapper stays REQUIRED (MultiCropDatasetWrapper auto-detects crop_size only
+# from a transform literally named 'RandomCropWithGrid'; we use RandomCropWithGridNoDummy).
+task: detection
+
+evaluator:
+  type: AitodCocoEvaluator
+  iou_types: ['bbox', ]
+
+num_classes: 5
+remap_mscoco_category: False
+
+train_dataloader:
+  type: DataLoader
+  dataset:
+    # Multi-Crop Wrapper for better annotation utilization
+    type: MultiCropDatasetWrapper
+    crops_per_image: 16   # 4096^2 images (1,448) -> 16 crops; 1536^2 (58,824) -> 1 => 81,992 crops/epoch
+    large_threshold_multiplier: 2
+    crop_size: 1536       # explicit (see header) - must equal RandomCropWithGridNoDummy.crop_size
+
+    grid_selection_strategy: 'random'
+    seed: null
+
+    # Inner dataset configuration
+    dataset:
+      type: CocoDetection
+      img_folder: /home/work/.mnt/DET_DATA/new_merged_all/train
+      ann_file: /home/work/.mnt/DET_DATA/new_merged_all/train.json
+      return_masks: False
+      transforms:
+        type: Compose
+        ops: ~
+
+  shuffle: True
+  num_workers: 8   # DEAD KEY: the later dome/include/dataloader.yml include wins -> effective 4 (TNT parity)
+  drop_last: True
+  persistent_workers: True
+  collate_fn:
+    type: BatchImageCollateFunction
+
+
+val_dataloader:
+  type: DataLoader
+  dataset:
+    type: CocoDetection
+    img_folder: /home/work/.mnt/DET_DATA/new_merged_all/val
+    ann_file: /home/work/.mnt/DET_DATA/new_merged_all/val.json
+    return_masks: False
+    transforms:
+      type: Compose
+      ops: ~
+  shuffle: False
+  num_workers: 8   # DEAD KEY: overridden to 2 by dome/include/dataloader.yml (TNT parity)
+  drop_last: False
+  collate_fn:
+    type: BatchImageCollateFunction

@@ -27,6 +27,8 @@ det/
 │             make_smoke_subsets.py, eval_topk.py, compute_wh_prior.py
 ├── tests/    pytest unit tests (Cayley stale-P, criterion empty batches, transforms)
 ├── logs/     smoke outputs (p*_*.log/json)
+├── HYPERPARAMS.md        every hyper-parameter of the P4 strict-local run as actually applied (+ diffs vs Dome-M)
+├── POST_TRAINING_TODO.md work queued for after the P4 run ends (review follow-ups, resume guards, eval, P5 prep)
 └── IMPLEMENTATION_LOG.md
 ```
 
