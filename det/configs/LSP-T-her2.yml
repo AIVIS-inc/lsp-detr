@@ -4,12 +4,12 @@
 #   - wh_prior_px -> new_merged_all train bbox per-axis median (configs/wh_prior_her2.json)
 #   - output_dir name
 # Include chain mirrors AIVIS-Dome-DETR/configs/dome/Dome-M-AITOD.yml exactly; runtime/dataloader/optimizer
-# are the *Dome files* (relative path to the sibling AIVIS-DETECTION checkout).
+# are the *Dome files* (the copy vendored in det/third_party/dome, see its VENDORED.md).
 __include__: [
   './dataset/her2_detection.yml',
-  '../../../AIVIS-DETECTION/AIVIS-Dome-DETR/configs/runtime.yml',
-  '../../../AIVIS-DETECTION/AIVIS-Dome-DETR/configs/dome/include/dataloader.yml',
-  '../../../AIVIS-DETECTION/AIVIS-Dome-DETR/configs/dome/include/optimizer.yml',
+  '../third_party/dome/configs/runtime.yml',
+  '../third_party/dome/configs/dome/include/dataloader.yml',
+  '../third_party/dome/configs/dome/include/optimizer.yml',
   './include/lsp_swinv2.yml',
 ]
 

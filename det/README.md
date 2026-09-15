@@ -1,7 +1,9 @@
 # LSP-DETR → bbox detector port (Dome-DETR recipe, hf-5class fine-tune)
 
-Everything for the port lives in this folder; the Dome framework
-(`/home/work/tksong/AIVIS-DETECTION/AIVIS-Dome-DETR`) is imported as an external dependency and is **not modified**.
+Everything for the port lives in this folder. The Dome-DETR framework it runs on is **vendored** in
+`third_party/dome/` (a byte-identical copy of `AIVIS-DETECTION/AIVIS-Dome-DETR`, provenance and re-sync recipe in its
+`VENDORED.md`), so a bare clone of the `det` branch trains on its own: no sibling repo, `$DOME_ROOT` is only an override
+for parity experiments, and the Dome sources are never edited in place.
 Single source of truth for design decisions: `../FINETUNE_STRATEGY.md` (2026-08-18).
 
 ```
@@ -11,7 +13,7 @@ det/
 ├── wsi_infer.py                     whole-slide inference (WSI → MVT/zstd .zst + COCO json); same launcher, MODE=wsi
 ├── combine_tnt_lymph.py             merge a tumour/non-tumour .zst with a lymphocyte/others .zst → 3-class .zst
 ├── lsp_det/
-│   ├── __init__.py              bootstraps Dome onto sys.path ($DOME_ROOT), imports/registers everything below
+│   ├── __init__.py              puts third_party/dome (or $DOME_ROOT) on sys.path, imports/registers everything below
 │   ├── lsp_trunk.py             STA decoder / Cayley-STRING / FeatureSampling / point-wh-class heads (from hf-5class/modeling.py)
 │   ├── lsp_detr_det.py          LSPDetrDetection (Swinv2-T offline from config + trunk; encoder.use_defe stub; freeze policy)
 │   ├── checkpoint.py            controlled hf-5class load (remap + exact missing/dropped assert)
@@ -20,25 +22,54 @@ det/
 │   └── optim_audit.py           param-group audit (exclusive regexes, LR/WD policy, frozen set)
 ├── configs/
 │   ├── dataset/combined_tnt_detection.yml   2-class bundle (copy of Dome coco_detection.yml + crop_size)
+│   ├── dataset/her2_detection.yml           5-class HER2 (new_merged_all) counterpart
 │   ├── include/lsp_swinv2.yml               model/criterion block (counterpart of dome_hgnetv2.yml)
-│   ├── LSP-T-combined.yml                   top-level (include chain = Dome-M-AITOD.yml with 2 swaps)
-│   └── wh_prior.json                        P0 bbox median statistics
-├── scripts/  dist_train_lsp.sh, cfg_diff_vs_dome.py, smoke_optim_groups.py, smoke_p3_{1,2,3}_*.py,
+│   ├── LSP-T-combined.yml / LSP-T-her2.yml  top-level (include chain = Dome-M-AITOD.yml with 2 swaps)
+│   └── wh_prior.json / wh_prior_her2.json   P0 bbox median statistics
+├── third_party/dome/   vendored Dome-DETR runtime: src/ (framework), tools/ (3 modules), configs/, LICENSE, VENDORED.md
+├── requirements.txt    pinned python deps (= the `dome` conda env the runs used)
+├── scripts/  dist_train_lsp.sh, fetch_hf5class.py, cfg_diff_vs_dome.py, smoke_optim_groups.py, smoke_p3_{1,2,3}_*.py,
 │             make_smoke_subsets.py, eval_topk.py, compute_wh_prior.py
 ├── tests/    pytest unit tests (Cayley stale-P, criterion empty batches, transforms)
-├── logs/     smoke outputs (p*_*.log/json)
+├── logs/     smoke outputs (p*_*.log/json), smoke_data/ (24+16-image COCO subsets of the TNT val split)
+├── reports/  training-run records (260827-p4-strict-local-30ep: per-epoch tables, figures, standalone HTML)
 ├── HYPERPARAMS.md        every hyper-parameter of the P4 strict-local run as actually applied (+ diffs vs Dome-M)
 ├── POST_TRAINING_TODO.md work queued for after the P4 run ends (review follow-ups, resume guards, eval, P5 prep)
 └── IMPLEMENTATION_LOG.md
 ```
 
-## Environment
-* conda env `dome`: `/home/work/miniconda3/envs/dome/bin/python` (py3.11, torch 2.13.0+cu130, torchvision 0.28, transformers 5.13.0)
-* extra deps installed into that env for this port: `einops==0.8.1`, `pytest`
-* no network needed: Swinv2 is built from `Swinv2Config` and all weights (backbone included) come from
-  `../hf-5class/model.safetensors`
-* Dome path: auto-detected as `../../AIVIS-DETECTION/AIVIS-Dome-DETR` (sibling checkout); override with `DOME_ROOT=/path`.
-  The config include chain uses the same relative path (`det/configs/LSP-T-combined.yml`).
+## Setup on a new machine (bare clone)
+```bash
+git clone git@github.com:AIVIS-inc/lsp-detr.git && cd lsp-detr && git checkout det
+conda create -n dome python=3.11 -y && conda activate dome                     # the runs used python 3.11.9
+pip install torch==2.13.0 torchvision==0.28.0 --index-url https://download.pytorch.org/whl/cu130   # CUDA 13.0 build
+pip install -r det/requirements.txt
+python det/scripts/fetch_hf5class.py      # -> hf-5class/model.safetensors (180 MB, sha256-verified; the only download)
+cd det && CUDA_VISIBLE_DEVICES="" python -m pytest tests -q -p no:warnings && cd ..      # 17 tests, CPU
+# data = COCO json + image root (edit det/configs/dataset/*.yml or override per launch); DRY_RUN=1 prints the command
+TRAIN_IMG_DIR=/data/bundle TRAIN_ANN=/data/bundle/train_coco_areafix.json \
+VAL_IMG_DIR=/data/bundle   VAL_ANN=/data/bundle/val_coco.json \
+OUTPUT_ROOT=/big/disk/lsp_detr DRY_RUN=1 bash det/scripts/dist_train_lsp.sh
+```
+* Nothing outside the clone is imported: `lsp_det/__init__.py` puts `det/third_party/dome` on `sys.path` and the config
+  include chains (`configs/LSP-T-*.yml`) read the vendored `runtime.yml` / `dome/include/*.yml`. `DOME_ROOT=/path`
+  swaps in another Dome checkout (parity experiments only; a checkout without the thread-pool matcher patch falls back
+  to sequential matching, result-identical).
+* Weights: `hf-5class/model.safetensors` is the RationAI/LSP-DETR hub release at revision `a32176184e` (2025-07-09,
+  sha256 `3f5437eb…`); the hub replaced that file on 2025-08-20, so `fetch_hf5class.py` pins the revision. Swinv2 is
+  built from `Swinv2Config` and every weight (backbone included) comes from that file (`pretrained:` in
+  `configs/include/lsp_swinv2.yml` is repo-relative). No other network access.
+* Data: `configs/dataset/combined_tnt_detection.yml` (2-class TNT bundle: `combined_all_v1_bundle` + the derived
+  `train_coco_areafix.json`, regenerate with `scripts/fix_train_area.py`) and `configs/dataset/her2_detection.yml`
+  (5-class `new_merged_all`) hold the training box's absolute paths; override them with the launcher's
+  `TRAIN_IMG_DIR/TRAIN_ANN/VAL_IMG_DIR/VAL_ANN` or `-u` updates.
+* Disk: 716 MB per checkpoint and `checkpoint_freq: 1`, i.e. ~23 GB for 30 epochs. `OUTPUT_ROOT` defaults to the
+  training box's NFS directory when it exists, else `det/output`.
+
+## Environment (training box)
+* conda env `dome`: `/home/work/miniconda3/envs/dome/bin/python` (py3.11, torch 2.13.0+cu130, torchvision 0.28, transformers 5.13.0);
+  `det/requirements.txt` is the pinned export of that env. The launcher and `run_inference.sh` pick it up automatically
+  (`PYTHON=` / `PY=` override).
 * **TF32**: this machine sets `TORCH_ALLOW_TF32_CUBLAS_OVERRIDE=1`, i.e. TF32 matmul is ON by default for every torch
   process (the reference Dome runs included). `det/train.py --tf32 keep|off|on` (default `keep`). The RoPE angle
   computation in the port is TF32-immune (elementwise) either way.
@@ -52,7 +83,7 @@ PY=/home/work/miniconda3/envs/dome/bin/python
 cd det && CUDA_VISIBLE_DEVICES="" $PY -m pytest tests -q -p no:warnings; cd ..
 
 # P2 gates
-CUDA_VISIBLE_DEVICES="" $PY det/scripts/cfg_diff_vs_dome.py          # resolved cfg vs Dome train_run.log:32
+CUDA_VISIBLE_DEVICES="" $PY det/scripts/cfg_diff_vs_dome.py --dome-log <AIVIS-Dome-DETR run>/train_run.log   # resolved cfg vs the Dome run's 'cfg:' line
 CUDA_VISIBLE_DEVICES="" $PY det/scripts/smoke_optim_groups.py --names   # optimizer groups
 
 # P3 smokes
@@ -68,7 +99,10 @@ NUM_GPUS=2 GPU_IDS=2,3 END_EPOCHS=2 OUTPUT_DIR=logs/p3_4_ddp2 \
 # P4 (full run, 8 GPU, 30 ep, seed 0) - DO NOT start without approval
 ARM=strict-local bash det/scripts/dist_train_lsp.sh
 ARM=movable-reference bash det/scripts/dist_train_lsp.sh
-# env knobs: NUM_GPUS GPU_IDS END_EPOCHS SEED OUTPUT_DIR TF32=keep|off EXTRA_UPDATES="key=val ..." MASTER_PORT
+CONFIG=configs/LSP-T-her2.yml bash det/scripts/dist_train_lsp.sh     # 5-class HER2 (running since 2026-09-04)
+# env knobs: NUM_GPUS GPU_IDS END_EPOCHS SEED CONFIG ARM OUTPUT_ROOT OUTPUT_DIR PYTHON TF32=keep|off|on RESUME
+#   EXTRA_UPDATES="key=val ..." TRAIN_IMG_DIR TRAIN_ANN VAL_IMG_DIR VAL_ANN DRY_RUN=1 MASTER_PORT DOME_MATCH_THREADS
+# a fresh launch refuses an OUTPUT_DIR that already holds a run (last.pth / log.txt / checkpoint*.pth); RESUME= continues it
 
 # auxiliary production metric (top-4000 / maxDets 4000), separate output name
 $PY det/scripts/eval_topk.py -c det/configs/LSP-T-combined.yml -r <ckpt.pth> --output-dir <dir> --topk 4000 --split val

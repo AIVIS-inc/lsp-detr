@@ -1,0 +1,93 @@
+__include__: [
+  '../dataset/coco_detection.yml',
+  '../runtime.yml',
+  './include/dataloader.yml',
+  './include/optimizer.yml',
+  './include/dome_hgnetv2.yml',
+]
+
+output_dir: ./output/S3
+
+checkpoint_freq: 1
+
+# Visualization parameters for train_samples and val_samples
+num_visualization_batches_per_gpu: 1  # Number of batches per GPU to save for training visualization
+num_visualization_samples_per_batch: null  # Number of samples per batch to save (null = save all)
+visualization_epoch_interval: 5  # Save visualization every N epochs (1 = every epoch)
+visualization_save_rank0_only: false  # If true, only rank 0 saves samples (saves storage)
+num_visualization_sample_batch: 1  # Number of batches to save for validation visualization
+
+eval_spatial_size: [1536, 1536] # h w
+
+DOME:
+  backbone: HGNetv2
+
+HGNetv2:
+  name: 'B2'
+  return_idx: [1, 2, 3]
+  freeze_at: 1
+  freeze_stem_only: false
+  freeze_norm: False
+  use_lab: True
+
+DomeTransformer:
+  num_layers: 4  # 5 6
+  eval_idx: -1  # -2 -3
+  feat_channels: [128, 128, 128]
+  hidden_dim: 128
+  dim_feedforward: 512
+  feat_strides: [8, 16, 32]
+  num_points: [8, 3, 1]
+  num_levels: 3
+  min_num_select: 300
+  max_num_select: 2000
+
+HybridEncoder:
+  in_channels: [384, 768, 1536]
+  feat_strides: [8, 16, 32]
+  use_encoder_idx: [2] # Only not deformable
+  use_hybrid: True
+  num_encoder_layers: 1
+  use_deformable: False
+  enc_n_points: 6 # Only deformable
+  hidden_dim: 128
+  depth_mult: .67
+  expansion: 1
+  num_feature_levels: 4
+  use_defe: True
+  defe_type: 'light'
+  use_mwas: True # Only if use_defe
+  mwas_window_size: 8  # Changed from 5 to 8 for 1024 resolution (128÷8=16)
+
+DomeCriterion:
+  defe_density_map_weight: 1
+
+DomePostProcessor:
+  num_top_queries: 2000  # Match max_num_select in DomeTransformer
+  use_nms: true  # Enable NMS for duplicate box removal (default: false)
+  nms_iou_threshold: 0.7  # IoU threshold for NMS
+  nms_score_threshold: 0.01  # Score threshold before NMS
+  class_agnostic: true  # If true, apply NMS ignoring class labels (all detections treated as same class)
+  keep_topk_after_nms: null  # Maximum number of boxes to keep after NMS (null = no limit)
+
+
+optimizer:
+  type: AdamW
+  params:
+    - params: ^(?=.*backbone)(?!.*norm|bn).*$
+      lr: 1.25e-05
+    - params: ^(?=.*(?:encoder|decoder))(?=.*(?:norm|bn)).*$
+      weight_decay: 0.0
+  lr: 0.00025
+  betas: [0.9, 0.999]
+  weight_decay: 0.000125
+
+lr_scheduler:
+  type: MultiStepLR
+  milestones: [24, 30]
+  gamma: 0.8
+
+epochs: 30
+
+lr_warmup_scheduler:
+  warmup_duration: 0

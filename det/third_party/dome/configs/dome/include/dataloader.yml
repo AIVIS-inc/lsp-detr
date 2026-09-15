@@ -1,0 +1,46 @@
+
+train_dataloader:
+  dataset:
+    dataset:
+      # Multi-crop compatible transforms for inner dataset
+      transforms:
+        type: Compose
+        ops:
+          # RandomCropWithGrid accepts grid_index from MultiCropDatasetWrapper
+          - {type: RandomCropWithGrid, crop_size: 1536, center_gt_size: 672}
+          
+          # Augmentation transforms
+          - {type: ColorJitter, brightness: 0.1, contrast: 0.1, saturation: 0.1, hue: 0.05}
+          - {type: RandomHorizontalFlip, p: 0.5}
+          - {type: RandomVerticalFlip, p: 0.5}
+          
+          # Box filtering
+          - {type: SanitizeBoundingBoxes, min_size: 2}
+          
+          # Conversion transforms
+          - {type: ConvertPILImage, dtype: 'float32', scale: True}
+          - {type: ConvertBoxes, fmt: 'cxcywh', normalize: True}
+          
+          # Additional augmentation
+          - {type: RandomGaussianBlur, p: 0.25, kernel_size: [3, 5], sigma: [0.1, 1.0]}
+
+  collate_fn:
+    type: BatchImageCollateFunction
+    # D-FINE style: No multiscale resizing in collate_fn
+    # base_size and base_size_repeat are not set to disable multiscale
+
+  shuffle: True
+  total_batch_size: 16
+  num_workers: 4
+
+
+val_dataloader:
+  dataset:
+    transforms:
+      ops:
+        # Validation uses Resize (not RandomCropWithGrid) for consistent evaluation
+        - {type: Resize, size: [1536, 1536], }
+        - {type: ConvertPILImage, dtype: 'float32', scale: True}
+  shuffle: False
+  total_batch_size: 8
+  num_workers: 2

@@ -267,3 +267,44 @@ registration through `det/lsp_det/__init__.py`.
 * Next: POST_TRAINING_TODO §1 (Dome dependency pin) → §2 (resume arm guard, required before movable-reference) →
   single-process re-eval of ep29 with `det/inference.py TILING=off` for true area-subset stats → P5 Dome baseline /
   movable-reference arm. GPUs are idle from 12:34.
+
+## 2026-09-15 — `det` branch made self-contained (trains from a bare clone, no sibling repo)
+
+* **Dome-DETR runtime vendored** into `det/third_party/dome/`: `src/` (91 modules, incl. the thread-pool Hungarian
+  matcher patch of `dome_criterion.py` that AIVIS-DETECTION never committed and every det/ run trained with),
+  `tools/{visualize_src_flatten,visualize_image_annotation,concatenate_images}.py` (the only `tools.*` modules `src/`
+  imports), `configs/`, Apache-2.0 `LICENSE`; provenance (AIVIS-DETECTION@1e6a557 working tree, `diff -r` clean) and the
+  re-sync recipe in `VENDORED.md`. `lsp_det/__init__.py` bootstraps that copy; `$DOME_ROOT` is now an override, not a
+  requirement. Closes POST_TRAINING_TODO §1 — `lsp_criterion.py` additionally falls back to sequential matching
+  (result-identical) if an override checkout lacks `_get_match_pool`.
+* Config include chains (`LSP-T-combined.yml`, `LSP-T-her2.yml`) read the vendored `runtime.yml` /
+  `dome/include/{dataloader,optimizer}.yml`; `lsp_swinv2.yml` `pretrained:` is repo-relative
+  (`hf-5class/model.safetensors`, resolved against the lsp-detr root by `LSPDetrDetection.resolve_pretrained_path`,
+  which raises a FileNotFoundError naming the fetch script) — POST_TRAINING_TODO §4.
+* `scripts/fetch_hf5class.py`: the 180 MB initial checkpoint comes from HF hub `RationAI/LSP-DETR` at the **pinned**
+  revision `a32176184e` (2025-07-09; sha256 `3f5437eb…`, 180,151,024 B — the revision whose config.json/modeling.py are
+  the tracked `hf-5class/` files). The hub replaced `model.safetensors` on 2025-08-20 (`99b0d385…`, 180,178,896 B), so an
+  unpinned download would NOT reproduce the P4/HER2 initialisation; the script verifies the checksum and is idempotent.
+* `requirements.txt`: pinned versions of the `dome` env (torch 2.13.0+cu130, torchvision 0.28.0, transformers 5.13.0,
+  faster-coco-eval-aitod 1.0.2 (PyPI), …), derived from the distributions actually imported while building the full
+  training config; the two custom evaluator packages are on PyPI.
+* `scripts/dist_train_lsp.sh`: python resolved like `run_inference.sh` (`PYTHON=` → training-box conda env → PATH),
+  `OUTPUT_ROOT` defaults to `det/output` when the NFS dir is absent, dataset overrides
+  `TRAIN_IMG_DIR/TRAIN_ANN/VAL_IMG_DIR/VAL_ANN` (→ `-u` updates, placed before `EXTRA_UPDATES`), `DRY_RUN=1` prints the
+  resolved torchrun command, preflight for the config file and the hf-5class checkpoint. On the training box the
+  resolved command is unchanged. `scripts/cfg_diff_vs_dome.py` now requires `--dome-log` (the reference Dome run's log
+  is not part of the repo).
+* Verified in a **fresh clone with no sibling checkout**, `DOME_ROOT` unset, CUDA hidden: `import lsp_det` resolves
+  `src`/`tools` inside the clone; without the weights the model build and the launcher preflight fail with the fetch
+  hint; `fetch_hf5class.py` downloads + verifies; 29 unit tests pass; `LSP-T-her2.yml` and `LSP-T-combined.yml` build
+  model (418/432 tensors) / criterion / optimizer (4 groups, audit OK) / EMA / evaluator, nested dataset `-u` overrides
+  land; `DRY_RUN=1` assembles the same command as before; every `src.*` submodule imports except the two dead paths
+  that also fail in the original tree (`coco_eval_aitod_slow` → aitodpycocotools, `deformable_encoder` → unbuilt MSDA
+  extension); `train.py --test-only -d cpu` runs the vendored solver → model forward (FlexAttention CPU forward) →
+  postprocessor → AitodCocoEvaluator end-to-end on 2 val images (29.5 s/it on 8 threads, `eval.pth` written; AP≈0 as
+  expected from the untrained new heads). A CPU *training* step is impossible — FlexAttention has no CPU backward
+  (torch limitation, unchanged by the port); the attempt got through dataloader/transforms/backbone into the decoder
+  before that error, and its first run caught a real gap (`det_engine.py` imports `tools.concatenate_images`), fixed
+  by vendoring that module. No GPU was used: all 8 were busy with the HER2 run (ep19/30), which kept running from the
+  untouched `/home/work/tksong/lsp-detr` working tree throughout (that tree is now behind `origin/det` and must be
+  updated only after the run ends — its launcher bash process is still alive).

@@ -31,7 +31,7 @@ LSPDetrDetection:
   movable_span_cells: 3.0     # movable-reference: centre may move over [-1,+2) cells around its own cell
   feature_sampling_fixed: False  # keep the snapshot's pixel-coordinate grid_sample behaviour (§4.3)
   # checkpoint (controlled remap/assert load, §3.1)
-  pretrained: /home/work/tksong/lsp-detr/hf-5class/model.safetensors
+  pretrained: hf-5class/model.safetensors   # relative paths resolve against the lsp-detr repo root; fetch: det/scripts/fetch_hf5class.py
   pretrained_arm: null        # null -> follows center_mode
   expect_imagenet_norm: True
   input_norm_check: warn

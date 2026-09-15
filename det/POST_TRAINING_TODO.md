@@ -16,7 +16,7 @@ IMPLEMENTATION_LOG.md 참조. 우선순위: **A = 다음 런(P5/movable) 전에 
 train/inference/eval_topk/pytest 전부 실행 불가(외부 리뷰어 환경에서 재현된 증상, 로컬에서 git archive로 확인).
 패치는 결과 동일(순서 보존 스레드풀)이므로 본 런의 정확성과는 무관 — 재현성 문제다.
 
-- [ ] `lsp_criterion.py`의 import를 fallback으로 변경:
+- [x] (2026-09-15) `lsp_criterion.py`의 import를 fallback으로 변경:
   ```python
   try:
       from src.zoo.dome.dome_criterion import _get_match_pool
@@ -24,9 +24,9 @@ train/inference/eval_topk/pytest 전부 실행 불가(외부 리뷰어 환경에
       def _get_match_pool():
           return None
   ```
-- [ ] 패치를 diff로 동봉: `git -C /home/work/tksong/AIVIS-DETECTION diff HEAD -- AIVIS-Dome-DETR/src/zoo/dome/dome_criterion.py > det/patches/dome_criterion_matchpool.diff` (선택: AIVIS-DETECTION에 커밋하는 쪽이 더 깔끔)
-- [ ] README.md / `lsp_det/__init__.py:9`의 "Dome은 수정하지 않음" 문구 정정 → "det/가 수정하지 않음; Dome@1e6a557 필요, 매처 스레드 패치는 선택(성능만)"
-- [ ] README에 Dome 커밋 해시 + `DOME_MATCH_THREADS`가 패치 있을 때만 유효함을 명시
+- [x] (2026-09-15, 더 강하게 해결) Dome 런타임 전체를 `det/third_party/dome/`에 벤더링(패치 적용된 working tree 그대로, VENDORED.md) → 클린 클론에서 sibling 레포 없이 import/학습 가능. ~~패치를 diff로 동봉:~~ `git -C /home/work/tksong/AIVIS-DETECTION diff HEAD -- AIVIS-Dome-DETR/src/zoo/dome/dome_criterion.py > det/patches/dome_criterion_matchpool.diff` (선택: AIVIS-DETECTION에 커밋하는 쪽이 더 깔끔)
+- [x] (2026-09-15) README.md / `lsp_det/__init__.py`의 "Dome은 수정하지 않음" 문구 정정 → "det/가 수정하지 않음; Dome@1e6a557 필요, 매처 스레드 패치는 선택(성능만)"
+- [x] (2026-09-15) VENDORED.md에 Dome 커밋 해시(1e6a557) + 패치 내용 명시; `DOME_MATCH_THREADS`는 벤더링 본에서 항상 유효
 - [ ] (선택) `bootstrap_dome()`이 Dome의 git HEAD/dirty 상태를 `init_report.json`에 기록
 
 ## §2 [A] resume arm 가드 (리뷰 item 3, MAJOR — movable 런 전 필수)
@@ -61,9 +61,9 @@ fallback — movable 체크포인트면 조용히 틀린 박스가 나온다.
 
 전부 `-u`/env로 오버라이드 가능하고 Dome 기준선도 같은 관행이므로 낮은 우선순위. 이식 필요가 생기면:
 
-- [ ] `lsp_swinv2.yml`의 `pretrained:`를 `lsp_det/__init__.py:22`의 레포 상대 상수 `HF5CLASS_CKPT`와 일원화
+- [x] (2026-09-15) `lsp_swinv2.yml`의 `pretrained:`를 레포 상대 경로(`hf-5class/model.safetensors`, `LSPDetrDetection.resolve_pretrained_path`)로 변경
   (또는 README에 `-u LSPDetrDetection.pretrained=...` 오버라이드 예시 추가)
-- [ ] README에 재현 섹션 추가: hf-5class 가중치 출처(HF hub `RationAI/LSP-DETR`) + 다운로드 한 줄 + sha256,
+- [x] (2026-09-15, 일부) README "Setup on a new machine" + `scripts/fetch_hf5class.py`(HF hub 리비전 a32176184e 고정, sha256 검증) + `det/requirements.txt`; 남은 것: ~~README에 재현 섹션 추가: hf-5class 가중치 출처(HF hub `RationAI/LSP-DETR`) + 다운로드 한 줄 + sha256,~~
   `train_coco_areafix.json` 재생성법(`scripts/fix_train_area.py`), conda env export(dome env, einops 수동 설치 포함)
 - [ ] `scripts/eval_topk.py:36`의 test json 하드코딩을 인자로 오버라이드 가능하게
 

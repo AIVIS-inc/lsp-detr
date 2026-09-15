@@ -13,7 +13,13 @@ import torch.distributed
 
 from src.core import register
 from src.misc.dist_utils import get_world_size, is_dist_available_and_initialized
-from src.zoo.dome.dome_criterion import DomeCriterion, _get_match_pool
+from src.zoo.dome.dome_criterion import DomeCriterion
+
+try:
+    from src.zoo.dome.dome_criterion import _get_match_pool
+except ImportError:  # $DOME_ROOT points at a Dome checkout without the thread-pool matcher patch
+    def _get_match_pool():  # sequential matching: result-identical, slower (det/third_party/dome/VENDORED.md)
+        return None
 
 __all__ = ["LSPCriterion"]
 

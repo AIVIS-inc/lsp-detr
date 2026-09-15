@@ -15,9 +15,12 @@ from src.core import YAMLConfig, yaml_utils
 
 p = argparse.ArgumentParser()
 p.add_argument("--config", default=os.path.join(lsp_det.DET_ROOT, "configs", "LSP-T-combined.yml"))
-p.add_argument("--dome-log", default=os.path.join(lsp_det.DOME_ROOT, "train_run.log"))
+p.add_argument("--dome-log", default=None,
+               help="train_run.log of the reference Dome HER2 run (its 'cfg:' line); lives in the AIVIS-DETECTION checkout, not in this repo")
 p.add_argument("--arm", default="strict-local")
 a = p.parse_args()
+if not a.dome_log or not os.path.isfile(a.dome_log):
+    sys.exit("pass --dome-log <AIVIS-Dome-DETR run>/train_run.log (the reference Dome run's log is not vendored in det/third_party/dome)")
 
 # ---- reference cfg (Dome run) ---------------------------------------------------------------
 with open(a.dome_log) as f:

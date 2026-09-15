@@ -1,12 +1,12 @@
 # LSP-DETR-T fine-tune on combined_all_v1_bundle with the Dome-M HER2 recipe.
 # Include chain mirrors AIVIS-Dome-DETR/configs/dome/Dome-M-AITOD.yml exactly, swapping only
 # dataset (combined_tnt) and model include (lsp_swinv2). runtime/dataloader/optimizer are the *Dome files*
-# (relative path to the sibling AIVIS-DETECTION checkout; override with a symlink or edit if the layout differs).
+# (the copy vendored in det/third_party/dome, see its VENDORED.md; byte-identical to the AIVIS-DETECTION checkout).
 __include__: [
   './dataset/combined_tnt_detection.yml',
-  '../../../AIVIS-DETECTION/AIVIS-Dome-DETR/configs/runtime.yml',
-  '../../../AIVIS-DETECTION/AIVIS-Dome-DETR/configs/dome/include/dataloader.yml',
-  '../../../AIVIS-DETECTION/AIVIS-Dome-DETR/configs/dome/include/optimizer.yml',
+  '../third_party/dome/configs/runtime.yml',
+  '../third_party/dome/configs/dome/include/dataloader.yml',
+  '../third_party/dome/configs/dome/include/optimizer.yml',
   './include/lsp_swinv2.yml',
 ]
 

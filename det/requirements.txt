@@ -1,0 +1,32 @@
+# det/ (LSP-DETR bbox port) - python 3.11.9, the exact versions of the conda env `dome` every run
+# (P4 TNT 2026-08, HER2 2026-09) trained with. Derived from the distributions actually imported while
+# building the full training config (model + criterion + optimizer + EMA + dataloaders + evaluator).
+#
+# torch/torchvision are the CUDA 13.0 builds (H100 box); install them first from the PyTorch index:
+#   pip install torch==2.13.0 torchvision==0.28.0 --index-url https://download.pytorch.org/whl/cu130
+# then: pip install -r det/requirements.txt
+torch==2.13.0
+torchvision==0.28.0
+transformers==5.13.0      # Swinv2Config / Swinv2Model (backbone built offline from config, weights from hf-5class)
+safetensors==0.8.0
+huggingface_hub==1.23.0   # scripts/fetch_hf5class.py (pulled in by transformers anyway)
+einops==0.8.1
+numpy==1.26.4
+scipy==1.15.2             # Hungarian matcher
+pillow==11.1.0
+PyYAML==6.0.3
+pycocotools==2.0.11
+faster-coco-eval==1.7.2
+faster-coco-eval-aitod==1.0.2   # AitodCocoEvaluator (github.com/RicePasteM/faster_coco_eval_aitod, on PyPI)
+tensorboard==2.21.0
+# imported at package-init time by the vendored Dome framework (third_party/dome/src)
+calflops==0.3.2
+timm==0.9.12
+scikit-image==0.26.0
+matplotlib==3.10.1
+rich==15.0.0
+sympy==1.14.0
+# tests
+pytest==8.1.1
+# inference-only extras (not needed to train): det/wsi_infer.py + combine_tnt_lymph.py need
+#   zstandard==0.25.0 mapbox-vector-tile==2.2.0 openslide-python (+ the OpenSlide C library)

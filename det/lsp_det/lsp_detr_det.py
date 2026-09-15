@@ -7,6 +7,7 @@ contract ``{pred_logits [B,Q,C], pred_boxes [B,Q,4] cxcywh-normalized, aux_outpu
 from __future__ import annotations
 
 import math
+import os
 import warnings
 from typing import Optional, Sequence
 
@@ -17,6 +18,17 @@ from torch import Tensor
 from src.core import register  # Dome registry (sys.path bootstrapped by lsp_det/__init__.py)
 
 from .lsp_trunk import FeatureSampling, LSPTransformerDet, relative_to_absolute_pos
+
+
+def resolve_pretrained_path(path: str) -> str:
+    """A relative checkpoint path (configs/include/lsp_swinv2.yml: ``hf-5class/model.safetensors``) is taken from
+    the lsp-detr repo root so the yml is machine-independent; absolute paths are used as given."""
+    if not os.path.isabs(path):
+        from . import LSP_REPO_ROOT
+        path = os.path.join(LSP_REPO_ROOT, path)
+    if not os.path.isfile(path):
+        raise FileNotFoundError(f"hf-5class checkpoint not found: {path} (run det/scripts/fetch_hf5class.py)")
+    return path
 
 __all__ = ["LSPDetrDetection"]
 
@@ -116,6 +128,7 @@ class LSPDetrDetection(nn.Module):
         self.pretrained_report = None
         if pretrained:
             from .checkpoint import load_hf5class_checkpoint
+            pretrained = resolve_pretrained_path(pretrained)
             self.pretrained_report = load_hf5class_checkpoint(self, pretrained, arm=pretrained_arm or center_mode)
 
         self._freeze_backbone(backbone_freeze_at, backbone_freeze_patch_embed)

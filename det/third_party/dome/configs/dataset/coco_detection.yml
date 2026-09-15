@@ -1,0 +1,53 @@
+task: detection
+
+evaluator:
+  type: AitodCocoEvaluator
+  iou_types: ['bbox', ]
+
+num_classes: 5
+remap_mscoco_category: False
+
+train_dataloader:
+  type: DataLoader
+  dataset:
+    # Multi-Crop Wrapper for better annotation utilization
+    type: MultiCropDatasetWrapper
+    crops_per_image: 16  # Number of crops per large image (≥4096px)
+    large_threshold_multiplier: 2  # Multiplier for large image threshold (default: 2)
+    
+    grid_selection_strategy: 'random'  # 'random', 'stratified', or 'deterministic'
+    seed: null  # Set seed for reproducibility (optional)
+    
+    # Inner dataset configuration
+    dataset:
+      type: CocoDetection
+      img_folder: /home/work/.mnt/DET_DATA/new_merged_all/train
+      ann_file: /home/work/.mnt/DET_DATA/new_merged_all/train.json
+      return_masks: False
+      transforms:
+        type: Compose
+        ops: ~
+  
+  shuffle: True
+  num_workers: 8
+  drop_last: True
+  persistent_workers: True  # Reuse workers across epochs
+  collate_fn:
+    type: BatchImageCollateFunction
+
+
+val_dataloader:
+  type: DataLoader
+  dataset:
+    type: CocoDetection
+    img_folder: /home/work/.mnt/DET_DATA/new_merged_all/val
+    ann_file: /home/work/.mnt/DET_DATA/new_merged_all/val.json
+    return_masks: False
+    transforms:
+      type: Compose
+      ops: ~
+  shuffle: False
+  num_workers: 8
+  drop_last: False
+  collate_fn:
+    type: BatchImageCollateFunction
